@@ -1,6 +1,6 @@
 # compiler: R8
 # compiler_version: 2.1.86
-# pg_map_id: f8787b8
+# pg_map_id: 1178be7
 # common_typos_disable
 com.netpluspay.netpossdk.BuildConfig -> com.netpluspay.netpossdk.BuildConfig:
     1:1:void <init>():6:6 -> <init>
@@ -32,35 +32,36 @@ com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory -> com.netpluspay
     1:1:void <init>():3:3 -> <init>
 com.netpluspay.netpossdk.core.AndroidTerminalReceiptBuilderFactory -> com.netpluspay.netpossdk.core.AndroidTerminalReceiptBuilderFactory:
     java.lang.StringBuilder builder -> a
-    1:24:void <init>():9:32 -> <init>
-    1:2:java.lang.Object appendAID(java.lang.String):126:127 -> appendAID
-    1:2:java.lang.Object appendAddress(java.lang.String):66:67 -> appendAddress
-    1:2:java.lang.Object appendAmount(java.lang.String):91:92 -> appendAmount
-    1:2:java.lang.Object appendAppName(java.lang.String):136:137 -> appendAppName
-    1:2:java.lang.Object appendAppVersion(java.lang.String):141:142 -> appendAppVersion
-    1:2:java.lang.Object appendAuthorizationCode(java.lang.String):111:112 -> appendAuthorizationCode
-    1:2:java.lang.Object appendCardHolderName(java.lang.String):106:107 -> appendCardHolderName
-    1:2:java.lang.Object appendCardNumber(java.lang.String):101:102 -> appendCardNumber
-    1:2:java.lang.Object appendCardScheme(java.lang.String):96:97 -> appendCardScheme
-    1:2:java.lang.Object appendDateTime(java.lang.String):86:87 -> appendDateTime
-    1:2:java.lang.Object appendDescription(java.lang.String):41:42 -> appendDescription
-    1:2:java.lang.Object appendMid(java.lang.String):56:57 -> appendMid
-    1:2:java.lang.Object appendRRN(java.lang.String):131:132 -> appendRRN
-    1:2:java.lang.Object appendRemark(java.lang.String):61:62 -> appendRemark
-    1:2:java.lang.Object appendResponseCode(java.lang.String):121:122 -> appendResponseCode
-    1:2:java.lang.Object appendStan(java.lang.String):81:82 -> appendStan
-    1:2:java.lang.Object appendTerminalId(java.lang.String):71:72 -> appendTerminalId
-    1:2:java.lang.Object appendTitle(java.lang.String):51:52 -> appendTitle
-    1:2:java.lang.Object appendTransactionStatus(java.lang.String):116:117 -> appendTransactionStatus
-    1:2:java.lang.Object appendTransactionType(java.lang.String):76:77 -> appendTransactionType
-    1:87:java.lang.Object build():182:268 -> build
-    1:81:java.lang.Object buildOld():273:353 -> buildOld
-    1:14:java.lang.Object buildString():164:177 -> buildString
-    1:1:java.lang.StringBuilder getBuilder():37:37 -> getBuilder
-    1:2:java.lang.Object isCustomerCopy():146:147 -> isCustomerCopy
-    1:2:java.lang.Object isMerchantCopy():151:152 -> isMerchantCopy
-    1:3:void printLine():158:160 -> printLine
-    1:2:java.lang.Object setIsReprint(boolean):46:47 -> setIsReprint
+    1:25:void <init>():9:33 -> <init>
+    1:2:java.lang.Object appendAID(java.lang.String):127:128 -> appendAID
+    1:2:java.lang.Object appendAddress(java.lang.String):67:68 -> appendAddress
+    1:2:java.lang.Object appendAmount(java.lang.String):92:93 -> appendAmount
+    1:2:java.lang.Object appendAppName(java.lang.String):137:138 -> appendAppName
+    1:2:java.lang.Object appendAppVersion(java.lang.String):142:143 -> appendAppVersion
+    1:2:java.lang.Object appendAuthorizationCode(java.lang.String):112:113 -> appendAuthorizationCode
+    1:2:java.lang.Object appendCardHolderName(java.lang.String):107:108 -> appendCardHolderName
+    1:2:java.lang.Object appendCardNumber(java.lang.String):102:103 -> appendCardNumber
+    1:2:java.lang.Object appendCardScheme(java.lang.String):97:98 -> appendCardScheme
+    1:2:java.lang.Object appendDateTime(java.lang.String):87:88 -> appendDateTime
+    1:2:java.lang.Object appendDescription(java.lang.String):42:43 -> appendDescription
+    1:2:java.lang.Object appendFootNote(java.lang.String):157:158 -> appendFootNote
+    1:2:java.lang.Object appendMid(java.lang.String):57:58 -> appendMid
+    1:2:java.lang.Object appendRRN(java.lang.String):132:133 -> appendRRN
+    1:2:java.lang.Object appendRemark(java.lang.String):62:63 -> appendRemark
+    1:2:java.lang.Object appendResponseCode(java.lang.String):122:123 -> appendResponseCode
+    1:2:java.lang.Object appendStan(java.lang.String):82:83 -> appendStan
+    1:2:java.lang.Object appendTerminalId(java.lang.String):72:73 -> appendTerminalId
+    1:2:java.lang.Object appendTitle(java.lang.String):52:53 -> appendTitle
+    1:2:java.lang.Object appendTransactionStatus(java.lang.String):117:118 -> appendTransactionStatus
+    1:2:java.lang.Object appendTransactionType(java.lang.String):77:78 -> appendTransactionType
+    1:93:java.lang.Object build():188:280 -> build
+    1:81:java.lang.Object buildOld():285:365 -> buildOld
+    1:14:java.lang.Object buildString():170:183 -> buildString
+    1:1:java.lang.StringBuilder getBuilder():38:38 -> getBuilder
+    1:2:java.lang.Object isCustomerCopy():147:148 -> isCustomerCopy
+    1:2:java.lang.Object isMerchantCopy():152:153 -> isMerchantCopy
+    1:3:void printLine():164:166 -> printLine
+    1:2:java.lang.Object setIsReprint(boolean):47:48 -> setIsReprint
 com.netpluspay.netpossdk.emv.CardReadResult -> com.netpluspay.netpossdk.emv.CardReadResult:
     java.lang.String encryptedPinBlock -> G
     java.lang.String track2Data -> f

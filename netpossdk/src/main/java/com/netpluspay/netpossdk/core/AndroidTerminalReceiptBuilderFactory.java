@@ -29,6 +29,7 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
     protected String remark;
     protected boolean isReprint;
     protected String mid;
+    protected String footNote;
     private StringBuilder builder = new StringBuilder();
 
     abstract protected T getThis();
@@ -152,6 +153,11 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
         return getThis();
     }
 
+    public T appendFootNote(String footNote){
+        this.footNote = footNote;
+        return getThis();
+    }
+
     public abstract void appendLogo(Bitmap bitmap);
 
     protected void printLine() {
@@ -263,6 +269,12 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
         }
         if (isReprint) {
             appendTextEntityCenter("REPRINT");
+        }
+
+        if (footNote != null){
+            appendTextEntity("\n---------------------------------------");
+            appendTextEntityCenter(footNote);
+            appendTextEntity("---------------------------------------");
         }
         printLine();
         return getThis();
