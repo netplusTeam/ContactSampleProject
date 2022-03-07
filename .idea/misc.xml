@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.31875" />
         <entry key="netposbarcodesdk/src/main/res/layout/activity_barcode_sdk.xml" value="0.3515625" />
         <entry key="netpossdk/src/main/res/layout/layout_input.xml" value="0.3594871794871795" />
         <entry key="netpossdk/src/main/res/layout/layout_password.xml" value="0.3594871794871795" />
