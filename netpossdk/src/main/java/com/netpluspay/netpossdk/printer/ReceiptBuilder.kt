@@ -33,6 +33,19 @@ class ReceiptBuilder(private val printerManager: POIPrinterManage) :
         printerManager.addPrintLine(textPrintLine)
     }
 
+    override fun appendTextEntityLargeFontCenter(str: String?) {
+        val textPrintLine = TextPrintLine().apply {
+            type = PrintLine.TEXT
+            content = str
+            position = PrintLine.CENTER
+            size = TextPrintLine.FONT_LARGE
+            isBold = false
+            isItalic = false
+            isInvert = false
+        }
+        printerManager.addPrintLine(textPrintLine)
+    }
+
     override fun appendTextEntityBold(p0: String?) {
         val textPrintLine = TextPrintLine().apply {
             type = PrintLine.TEXT

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
  */
 public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
     protected String title;
+    protected String merchantAddress;
     protected String merchantName;
     protected String terminalId;
     protected String transactionType;
@@ -63,8 +64,13 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
         return getThis();
     }
 
-    public T appendAddress(String merchantName) {
+    public T appendMerchantName(String merchantName) {
         this.merchantName = merchantName;
+        return getThis();
+    }
+
+    public T appendMerchantAddress(String addressOfMerchant) {
+        this.merchantAddress = addressOfMerchant;
         return getThis();
     }
 
@@ -189,10 +195,16 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
             appendTextEntity(title);
 
         if (merchantName != null)
-            appendTextEntity(merchantName);
+            appendTextEntityLargeFontCenter(merchantName);
+
+        if (merchantAddress != null) {
+            appendTextEntityCenter("\n" + merchantAddress);
+        } else {
+            appendTextEntityCenter("\n No Address found for user");
+        }
 
         if (terminalId != null) {
-            appendTextEntity("TERMINAL ID: " + terminalId);
+            appendTextEntity("\nTERMINAL ID: " + terminalId);
         }
 
         if (mid != null) {
@@ -285,9 +297,6 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
         if (title != null)
             appendTextEntity(title);
 
-        if (merchantName != null)
-            appendTextEntity(merchantName);
-
         if (terminalId != null) {
             appendTextEntity("TERMINAL ID: " + terminalId);
         }
@@ -366,6 +375,8 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
     }
 
     public abstract void appendTextEntity(String str);
+
+    public abstract void appendTextEntityLargeFontCenter(String str);
 
     public abstract void appendTextEntityBold(String str);
 
