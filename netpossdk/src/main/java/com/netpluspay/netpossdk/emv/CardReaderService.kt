@@ -42,6 +42,7 @@ class CardReaderService @JvmOverloads constructor(
     private lateinit var emitter: ObservableEmitter<CardReaderEvent>
     private var isOnline = false
     private lateinit var passwordDialog: PasswordDialog
+    private var bundleForVisaPICC = Bundle()
     private var isUpdate = false
     private var cardType = 0
     private val mutableLiveData: MutableLiveData<Bundle> = MutableLiveData()
@@ -127,12 +128,14 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onRequestInputPin(p0: Bundle?) {
+            Log.d("NEW_BUNDLE", p0.toString())
             mutableLiveData.postValue(p0)
             callPinPadDialog(activity, p0) {}
         }
 
         override fun onRequestOnlineProcess(dataBundle: Bundle) {
             Log.d("DATA_TAG_BUNDLE_1", dataBundle.toString())
+            bundleForVisaPICC = dataBundle
             isOnline = true
             var buff = dataBundle.getByteArray(EmvOnlineRequestConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
@@ -272,31 +275,42 @@ class CardReaderService @JvmOverloads constructor(
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
                     if (isVisaCard) {
-                        CustomPasswordDialog(
-                            activity,
-                            cardPan,
-                            object : CustomPasswordDialog.Listener {
-                                override fun onConfirm(pinBlock: String?) {
-                                    if (pinBlock != null) {
-                                        cardPinBlock = pinBlock
-                                    }
-                                    emitter.onNext(
-                                        CardReaderEvent.CardRead(
-                                            CardReadResult(
-                                                result,
-                                                transactionData
-                                            ).apply {
-                                                encryptedPinBlock = cardPinBlock
-                                            }
-                                        )
-                                    )
-                                }
+                        Handler(Looper.getMainLooper()).post {
+                            val pinDialog = CustomPasswordDialog(
+                                activity,
+                                cardPan,
+                                object : CustomPasswordDialog.Listener {
+                                    override fun onConfirm(pinBlock: String?) {
+                                        if (pinBlock != null) {
+                                            Log.d("GOTTEN_PIN_BL", pinBlock)
+                                            cardPinBlock = pinBlock
+                                            emvCoreManager.onSetConfirmPin(Bundle())
+                                        }
 
-                                override fun onError(message: String?) {
-//                                TODO("Not yet implemented")
+                                        emitter.onNext(
+                                            CardReaderEvent.CardRead(
+                                                CardReadResult(
+                                                    result,
+                                                    transactionData
+                                                ).apply {
+//                                                    Log.d("resultDDD", result.toString())
+//                                                    Log.d(
+//                                                        "TransactionData",
+//                                                        transactionData.toString()
+//                                                    )
+                                                    encryptedPinBlock = pinBlock
+                                                }
+                                            )
+                                        )
+                                    }
+
+                                    override fun onError(message: String?) {
+                                        Log.d("ON_ERROR==>", "$message")
+                                    }
                                 }
-                            }
-                        )
+                            )
+                            pinDialog.showDialog()
+                        }
                     } else {
                         handleOnNextEmissionForCardResult(result)
                     }
@@ -321,6 +335,7 @@ class CardReaderService @JvmOverloads constructor(
                         transEnd(-1, "Did not request pinblock")
                         return
                     }
+                    Log.d("NEW_PIN_BL", cardPinBlock)
                     encryptedPinBlock = cardPinBlock
                 }
             )

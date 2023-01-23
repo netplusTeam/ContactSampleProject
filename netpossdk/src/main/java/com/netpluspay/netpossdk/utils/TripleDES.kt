@@ -16,7 +16,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     private fun GetKey(key: ByteArray): ByteArray {
         val bKey = ByteArray(24)
         var i: Int
@@ -52,7 +51,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun encrypt(data: ByteArray?, key: ByteArray): ByteArray? {
 // 		Log.d(TripleDES.class.getSimpleName(), "Data: " +  Hex2String(data));
 // 		Log.d(TripleDES.class.getSimpleName(), "Key: " +  Hex2String(key));
@@ -76,7 +74,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun decrypt(data: ByteArray?, key: ByteArray): ByteArray? {
         val sk: SecretKey = SecretKeySpec(GetKey(key), "DESede")
         try {
@@ -98,7 +95,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun encrypt_CBC(data: ByteArray, key: ByteArray): ByteArray? {
         val sk: SecretKey = SecretKeySpec(GetKey(key), "DESede")
         try {
@@ -124,7 +120,6 @@ internal object TripleDES {
         return null
     }
 
-    @JvmStatic
     fun encrypt_CBC(data: ByteArray, key: ByteArray, IV: ByteArray): ByteArray? {
         val sk: SecretKey = SecretKeySpec(GetKey(key), "DESede")
         try {
@@ -157,7 +152,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun decrypt_CBC(data: ByteArray, key: ByteArray): ByteArray? {
         val sk: SecretKey = SecretKeySpec(GetKey(key), "DESede")
         try {
@@ -182,7 +176,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun encrypt(data: String, key: String): String {
         val bData: ByteArray
         val bKey: ByteArray
@@ -201,7 +194,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun decrypt(data: String, key: String): String {
         val bData: ByteArray
         val bKey: ByteArray
@@ -220,7 +212,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun encrypt_CBC(data: String, key: String): String {
         val bData: ByteArray
         val bKey: ByteArray
@@ -239,7 +230,6 @@ internal object TripleDES {
      * @param key
      * @return
      */
-    @JvmStatic
     fun decrypt_CBC(data: String, key: String): String {
         val bData: ByteArray
         val bKey: ByteArray
@@ -257,7 +247,6 @@ internal object TripleDES {
      * @param data
      * @return
      */
-    @JvmStatic
     fun Hex2String(data: ByteArray?): String {
         if (data == null) {
             return ""
@@ -277,7 +266,6 @@ internal object TripleDES {
      * @param data
      * @return
      */
-    @JvmStatic
     fun String2Hex(data: String): ByteArray {
         val result: ByteArray
         result = ByteArray(data.length / 2)

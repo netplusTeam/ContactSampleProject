@@ -2,6 +2,7 @@ package com.netpluspay.netpossdk.view;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -63,7 +64,6 @@ public class CustomPasswordDialog {
     private Group groupKeyboard;
     private Listener pinListener;
     private String pan;
-
 
     public CustomPasswordDialog(Activity context, String pan, Listener pinListener) {
 
@@ -132,7 +132,7 @@ public class CustomPasswordDialog {
                 Toast.makeText(context, "Pin too short", Toast.LENGTH_SHORT).show();
                 return;
             }
-            pinListener.onConfirm(encodePinBlock(etPin.getText().toString(), pan));
+            pinListener.onConfirm(encodePinBlock(etPin.getText().toString(), pan, v.getContext()));
             dialog.cancel();
         });
 
@@ -151,7 +151,7 @@ public class CustomPasswordDialog {
         window.setGravity(Gravity.BOTTOM);
     }
 
-    private static String encodePinBlock(String pin, String pan) {
+    private static String encodePinBlock(String pin, String pan, Context context) {
         String pinP = "0" + pin.length() + pin + "FFFFFFFFFF";
         String cardNum = "0000" + pan.substring(3, 15);
         // System.out.println(Util.BytesToString(HexDump.hexStringToByteArray("0425A8EF8B7A6E66")));
@@ -160,7 +160,8 @@ public class CustomPasswordDialog {
         System.out.println(pinblock);
         //System.out.println(TripleDES.encrypt(pinblock, pinKey));
 
-        return TripleDES.encrypt(pinblock, NetPosSdk.INSTANCE.getClearKey());
+        assert pinblock != null;
+        return ExtensionFunctions.INSTANCE.encrypt(pinblock, NetPosSdk.INSTANCE.getClearKey(context));
     }
 
 

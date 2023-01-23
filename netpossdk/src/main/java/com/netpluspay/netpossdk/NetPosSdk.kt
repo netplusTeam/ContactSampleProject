@@ -4,10 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.netpluspay.netpossdk.emv.param.EmvParam
-import com.netpluspay.netpossdk.utils.DeviceConfig
-import com.netpluspay.netpossdk.utils.GlobalData
-import com.netpluspay.netpossdk.utils.TerminalParameters
-import com.netpluspay.netpossdk.utils.TripleDES
+import com.netpluspay.netpossdk.utils.* // ktlint-disable no-wildcard-imports
 import com.netpluspay.netpossdk.utils.tlv.HexUtil
 import com.pos.sdk.accessory.POIGeneralAPI
 import com.pos.sdk.emvcore.POIEmvCoreManager
@@ -98,7 +95,7 @@ object NetPosSdk {
     }
 
     @JvmStatic
-    fun writeTpkKey(keyIndex: Int, keyData: String): Int = try {
+    fun writeTpkKey(keyIndex: Int, keyData: String, context: Context): Int = try {
         val pedKeyInfo = PedKeyInfo(
             0,
             0,
@@ -108,18 +105,22 @@ object NetPosSdk {
             16,
             HexUtil.parseHex(keyData)
         )
-        saveInSharedPrefs(keyData)
+        saveInSharedPrefs(keyData, context)
         POIHsmManage.getDefault().PedWriteKey(pedKeyInfo, PedKcvInfo(0, ByteArray(5)))
     } catch (exception: Exception) {
         exception.printStackTrace()
         -1
     }
 
-    private fun saveInSharedPrefs(keyData: String) {
-        GlobalData.setKey(keyData)
+    private fun saveInSharedPrefs(keyData: String, context: Context) {
+        val appPrefs = AppSharedPreferences()
+        appPrefs.putString(keyData, context)
     }
 
-    public fun getClearKey() = GlobalData.getKey()
+    public fun getClearKey(context: Context): String {
+        val appPrefs = AppSharedPreferences()
+        return appPrefs.getString(context)
+    }
 
     @JvmStatic
     fun writeDukptKey(keyIndex: Int, keyData: String, ksnData: String): Int {
@@ -135,7 +136,7 @@ object NetPosSdk {
         )
     }
 
-    @JvmStatic
-    fun writeTpkKey(keyIndex: Int, encryptedKeyData: String, masterKey: String) =
-        writeTpkKey(keyIndex, keyData = TripleDES.decrypt(encryptedKeyData, masterKey))
+//    @JvmStatic
+//    fun writeTpkKey(keyIndex: Int, encryptedKeyData: String, masterKey: String): Int =
+//        writeTpkKey(keyIndex, keyData = TripleDES.decrypt(encryptedKeyData, masterKey))
 }
