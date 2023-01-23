@@ -11,14 +11,11 @@ import com.pos.sdk.printer.models.BitmapPrintLine
 import com.pos.sdk.printer.models.PrintLine
 import com.pos.sdk.printer.models.TextPrintLine
 import io.reactivex.Single
-import java.util.concurrent.TimeUnit
-
 
 class ReceiptBuilder(private val printerManager: POIPrinterManage) :
     AndroidTerminalReceiptBuilderFactory<ReceiptBuilder, Single<PrinterResponse>>() {
 
     override fun getThis(): ReceiptBuilder = this
-
 
     override fun appendTextEntity(p0: String?) {
         val textPrintLine = TextPrintLine().apply {
@@ -108,8 +105,9 @@ class ReceiptBuilder(private val printerManager: POIPrinterManage) :
             build()
             var hasStartedPrinting = false
             Handler(Looper.getMainLooper()).postDelayed({
-                if (hasStartedPrinting.not())
+                if (hasStartedPrinting.not()) {
                     it.onError(POSPrinterException(-1, "Took too long to start printing"))
+                }
             }, 7000)
             printerManager.beginPrint(object : POIPrinterManage.IPrinterListener {
                 override fun onError(p0: Int, p1: String?) {

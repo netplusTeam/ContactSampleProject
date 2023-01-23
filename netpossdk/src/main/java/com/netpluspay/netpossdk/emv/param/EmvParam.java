@@ -1,7 +1,6 @@
 package com.netpluspay.netpossdk.emv.param;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.netpluspay.netpossdk.utils.TerminalParameters;
 import com.netpluspay.netpossdk.utils.tlv.BerTag;
@@ -18,7 +17,6 @@ import com.pos.sdk.emvcore.PosEmvCapk;
 import com.pos.sdk.emvcore.PosEmvExceptionFile;
 import com.pos.sdk.emvcore.PosEmvRevocList;
 import com.pos.sdk.utils.PosUtils;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,8 +106,14 @@ public class EmvParam {
         mEmvCoreManager.EmvAddAid(appList);
 
         appList = addAidParam("A0000000031010", "008C", true);
-        appList.ContactlessTransMoneyLimit = 200001;
-        appList.TermDoCvmMoneyLimit = 200001;
+//        appList.ContactlessTransMoneyLimit = 200001;
+//        appList.TermDoCvmMoneyLimit = 200001;
+
+        appList.dDOL = PosUtils.hexStringToBytes("9F3704");
+        appList.tDOL = PosUtils.hexStringToBytes("9F3704");
+        appList.TACDenial = PosUtils.hexStringToBytes("0000000000");
+        appList.TACOnline = PosUtils.hexStringToBytes("fc50808800");
+        appList.TACDefault = PosUtils.hexStringToBytes("fc50b8a000");
         mEmvCoreManager.EmvAddAid(appList);
 
         appList = addAidParam("A0000000032010", "008C", true);
@@ -801,7 +805,6 @@ public class EmvParam {
             qualifiers[2] |= 0x40;
         }
         mBerTlvBuilder.addBerTlv(new BerTlv(new BerTag(EmvTermCfgConstraints.VISA_SET_QUALIFIERS_TAG), qualifiers));
-
         bundle.putByteArray(EmvTermCfgConstraints.CONFIGPARAM, mBerTlvBuilder.buildArray());
 
         POIEmvCoreManager.getDefault().EmvSetTerminal(EmvTermCfgConstraints.TYPE_VISA, bundle);

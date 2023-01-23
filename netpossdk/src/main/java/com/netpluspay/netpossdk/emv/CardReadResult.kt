@@ -10,7 +10,6 @@ import com.netpluspay.netpossdk.utils.tlv.HexUtil
 import org.apache.commons.lang.StringUtils
 import kotlin.Exception
 
-
 class CardReadResult(
     private val readResultCode: Int,
     private val transactionData: TransactionData
@@ -95,7 +94,7 @@ class CardReadResult(
         val data = transactionData.transData
         val mTlvs = mTlvParser.parse(data)
         for (tlv in mTlvs.list) {
-            //Log.e("TAG", "Emv tag: ${tlv.tag.berTagHex}  -  value ${tlv.hexValue}")
+            // Log.e("TAG", "Emv tag: ${tlv.tag.berTagHex}  -  value ${tlv.hexValue}")
             when (tlv.tag.berTagHex) {
                 "5A" -> applicationPrimaryAccountNumber = tlv.hexValue
                 "5F20" -> cardHolderName = tlv.textValue
@@ -241,50 +240,49 @@ class CardReadResult(
                 .append(
                     cardSequenceNumber
                 )
-            //.append("91").append(this.issueAuthenticationData);
-            //.append("9F6E").append(this.formFactorIndicator);
+            // .append("91").append(this.issueAuthenticationData);
+            // .append("9F6E").append(this.formFactorIndicator);
             return builder.toString()
         }
 
-
     override fun toString(): String {
         return "CardReadResult{" +
-                "cardResultCode=" + readResultCode +
-                ", applicationPrimaryAccountNumber='" + applicationPrimaryAccountNumber + '\'' +
-                ", cardHolderName='" + cardHolderName + '\'' +
-                ", track2Data='" + track2Data + '\'' +
-                ", applicationPANSequenceNumber='" + applicationPANSequenceNumber + '\'' +
-                ", cryptogram='" + cryptogram + '\'' +
-                ", issuerApplicationData='" + issuerApplicationData + '\'' +
-                ", unpredictableNumber='" + unpredictableNumber + '\'' +
-                ", applicationTransactionCounter='" + applicationTransactionCounter + '\'' +
-                ", terminalVerificationResults='" + terminalVerificationResults + '\'' +
-                ", transactionDate='" + transactionDate + '\'' +
-                ", transactionType='" + transactionType + '\'' +
-                ", amount='" + amount + '\'' +
-                ", transactionCurrencyCode='" + transactionCurrencyCode + '\'' +
-                ", applicationInterchangeProfile='" + applicationInterchangeProfile + '\'' +
-                ", terminalCountryCode='" + terminalCountryCode + '\'' +
-                ", cashBackAmount='" + cashBackAmount + '\'' +
-                ", terminalCapabilities='" + terminalCapabilities + '\'' +
-                ", cardholderVerificationMethod='" + cardholderVerificationMethod + '\'' +
-                ", terminalType='" + terminalType + '\'' +
-                ", originalDeviceSerial='" + originalDeviceSerial + '\'' +
-                ", deviceSerialNumber='" + deviceSerialNumber + '\'' +
-                ", authorizationResponseCode='" + authorizationResponseCode + '\'' +
-                ", applicationVersionNumber='" + applicationVersionNumber + '\'' +
-                ", transactionSequenceNumber='" + transactionSequenceNumber + '\'' +
-                ", dedicatedFileName='" + dedicatedFileName + '\'' +
-                ", issuerApplicationDiscretionaryData='" + applicationDiscretionaryData + '\'' +
-                ", expirationDate='" + expirationDate + '\'' +
-                '}'
+            "cardResultCode=" + readResultCode +
+            ", applicationPrimaryAccountNumber='" + applicationPrimaryAccountNumber + '\'' +
+            ", cardHolderName='" + cardHolderName + '\'' +
+            ", track2Data='" + track2Data + '\'' +
+            ", applicationPANSequenceNumber='" + applicationPANSequenceNumber + '\'' +
+            ", cryptogram='" + cryptogram + '\'' +
+            ", issuerApplicationData='" + issuerApplicationData + '\'' +
+            ", unpredictableNumber='" + unpredictableNumber + '\'' +
+            ", applicationTransactionCounter='" + applicationTransactionCounter + '\'' +
+            ", terminalVerificationResults='" + terminalVerificationResults + '\'' +
+            ", transactionDate='" + transactionDate + '\'' +
+            ", transactionType='" + transactionType + '\'' +
+            ", amount='" + amount + '\'' +
+            ", transactionCurrencyCode='" + transactionCurrencyCode + '\'' +
+            ", applicationInterchangeProfile='" + applicationInterchangeProfile + '\'' +
+            ", terminalCountryCode='" + terminalCountryCode + '\'' +
+            ", cashBackAmount='" + cashBackAmount + '\'' +
+            ", terminalCapabilities='" + terminalCapabilities + '\'' +
+            ", cardholderVerificationMethod='" + cardholderVerificationMethod + '\'' +
+            ", terminalType='" + terminalType + '\'' +
+            ", originalDeviceSerial='" + originalDeviceSerial + '\'' +
+            ", deviceSerialNumber='" + deviceSerialNumber + '\'' +
+            ", authorizationResponseCode='" + authorizationResponseCode + '\'' +
+            ", applicationVersionNumber='" + applicationVersionNumber + '\'' +
+            ", transactionSequenceNumber='" + transactionSequenceNumber + '\'' +
+            ", dedicatedFileName='" + dedicatedFileName + '\'' +
+            ", issuerApplicationDiscretionaryData='" + applicationDiscretionaryData + '\'' +
+            ", expirationDate='" + expirationDate + '\'' +
+            '}'
     }
 
-    //return cardResultCode == EmvApi.EMV_TRANS_ACCEPT || cardResultCode == EmvApi.EMV_TRANS_QPBOC_ACCEPT;
+    // return cardResultCode == EmvApi.EMV_TRANS_ACCEPT || cardResultCode == EmvApi.EMV_TRANS_QPBOC_ACCEPT;
     val isEMVAccepted: Boolean
         get() = true
 
-    //return cardResultCode == EmvApi.EMV_TRANS_ACCEPT || cardResultCode == EmvApi.EMV_TRANS_QPBOC_ACCEPT;
+    // return cardResultCode == EmvApi.EMV_TRANS_ACCEPT || cardResultCode == EmvApi.EMV_TRANS_QPBOC_ACCEPT;
     init {
         extractValues()
     }

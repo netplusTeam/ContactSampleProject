@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory
 import com.netpluspay.netpossdk.emv.data.TransactionData
+import com.netpluspay.netpossdk.errors.POSException
 import com.netpluspay.netpossdk.utils.DeviceConfig
 import com.netpluspay.netpossdk.utils.GlobalData
-import com.netpluspay.netpossdk.errors.POSException
-import com.netpluspay.netpossdk.utils.tlv.BerTlvBuilder
-import com.netpluspay.netpossdk.utils.tlv.BerTlvParser
-import com.netpluspay.netpossdk.utils.tlv.BerTlvs
-import com.netpluspay.netpossdk.utils.tlv.HexUtil
+import com.netpluspay.netpossdk.utils.tlv.*
+import com.netpluspay.netpossdk.view.CustomPasswordDialog
 import com.netpluspay.netpossdk.view.MaterialDialog
 import com.netpluspay.netpossdk.view.PasswordDialog
 import com.pos.sdk.emvcore.IPosEmvCoreListener
@@ -33,9 +33,10 @@ class CardReaderService @JvmOverloads constructor(
         DEV_PICC
     ),
     private val timeout: Int = 45,
-    private val keyMode: Int  = POIHsmManage.PED_PINBLOCK_FETCH_MODE_TPK
+    private val keyMode: Int = POIHsmManage.PED_PINBLOCK_FETCH_MODE_TPK
 ) :
     AndroidTerminalCardReaderFactory<Observable<CardReaderEvent>>() {
+    private val gson: Gson = Gson()
     private val logTag = CardReaderService::class.java.simpleName
     private var transactionData = TransactionData()
     private lateinit var emitter: ObservableEmitter<CardReaderEvent>
@@ -43,48 +44,52 @@ class CardReaderService @JvmOverloads constructor(
     private lateinit var passwordDialog: PasswordDialog
     private var isUpdate = false
     private var cardType = 0
+    private val mutableLiveData: MutableLiveData<Bundle> = MutableLiveData()
     private lateinit var reqData: Bundle
     private val emvCoreManager: POIEmvCoreManager = getDefault()
     private lateinit var cardPinBlock: String
     private val emvCoreListener: IPosEmvCoreListener.Stub = object : IPosEmvCoreListener.Stub() {
         override fun onEmvProcess(cardMode: Int) {
-            if (cardMode == DEV_ICC
-                || cardMode == DEV_MAG
-                || cardMode == DEV_PICC
+            Log.d("onEmvProcess", "CALLED")
+            if (cardMode == DEV_ICC ||
+                cardMode == DEV_MAG ||
+                cardMode == DEV_PICC
             ) {
                 cardType = cardMode
                 when (cardMode) {
                     DEV_ICC -> {
-                        //tvMessage1.setText("Icc Card Trans")
-                        Log.e("TAG", "ICC Card trans")
+                        // tvMessage1.setText("Icc Card Trans")
+                        Log.d("TAG", "ICC Card trans")
                     }
                     DEV_MAG -> {
-                        Log.e("TAG", "Mag Card trans")
-                        //tvMessage1.setText("Mag Card Trans")
+                        Log.d("TAG", "Mag Card trans")
+                        // tvMessage1.setText("Mag Card Trans")
                     }
                     DEV_PICC -> {
-                        Log.e("TAG", "PICC Card trans")
-                        //tvMessage1.setText("Picc Card Trans")
+                        Log.d("TAG", "PICC Card trans")
+                        // tvMessage1.setText("Picc Card Trans")
                     }
                 }
-                if (emitter.isDisposed.not())
+                if (emitter.isDisposed.not()) {
+                    Log.d("ON_EMV_PROCESS", "Called")
                     emitter.onNext(CardReaderEvent.CardDetected(cardMode))
-                //tvMessage2.setText("Processing")
+                }
+                // tvMessage2.setText("Processing")
                 transactionData.cardType = cardType
             } else {
                 when (cardMode) {
                     PosEmvErrCode.EMV_TIMEOUT -> {
-                        Log.e(logTag, "Detection Card Timeout")
+                        Log.d(logTag, "Detection Card Timeout")
                         transEnd(cardMode, "Card Detection Timeout")
                         return
                     }
                     PosEmvErrCode.EMV_CANCEL -> {
-                        Log.e(logTag, "Transaction Cancel")
+                        Log.d(logTag, "Transaction Cancel")
                         transEnd(cardMode, "Transaction Cancel")
                         return
                     }
                     PosEmvErrCode.EMV_MULTI_PICC -> {
-                        Log.e(logTag, "Multiple cards , Present a single card")
+                        Log.d(logTag, "Multiple cards , Present a single card")
                         transEnd(cardMode, "Multiple cards, Present a single card")
                         return
                     }
@@ -103,62 +108,31 @@ class CardReaderService @JvmOverloads constructor(
             val appNames: Array<String> = appNameList.toTypedArray()
             val mDialog = MaterialDialog(activity)
             mDialog.showListConfirmChoseDialog(
-                "Select Application", appNames
-            ) { position -> emvCoreManager.onSetSelAppResponse(position) }
+                "Select Application",
+                appNames
+            ) { position ->
+                emvCoreManager.onSetSelAppResponse(position)
+            }
         }
 
         override fun onConfirmCardInfo(p0: Int, p1: String?) {
+            Log.d("onConfirmCardInfo", "onConfirmCardInfo IS BEING CALLED")
             emvCoreManager.onSetConfirmCardInfo(true)
         }
 
         override fun onPiccKernelMode(p0: Int) {
-
         }
 
         override fun onPiccSecondTapCard() {
-
         }
 
         override fun onRequestInputPin(p0: Bundle?) {
-            Handler(Looper.getMainLooper()).post {
-                val isIcSlot = cardType == DEV_ICC
-                passwordDialog = PasswordDialog(
-                    activity, isIcSlot, p0,
-                    DeviceConfig.TPKIndex,
-                    keyMode
-                ).apply {
-                    setPinListener(object : PasswordDialog.Listener {
-                        override fun onConfirm(
-                            verifyResult: Int,
-                            pinBlock: ByteArray?,
-                            pinKsn: ByteArray?
-                        ) {
-                            cardPinBlock = ""
-                            pinBlock?.let {
-                                cardPinBlock =
-                                    HexUtil.toHexString(it).toLowerCase(Locale.getDefault())
-                            }
-                            emvCoreManager.onSetConfirmPin(Bundle())
-                        }
-
-                        override fun onError(verifyResult: Int, pinTryCntOut: Int) {
-                            val pinErrorMessage = when(verifyResult){
-                                EmvPinConstraints.EMV_VERIFY_PIN_ERROR -> "Pin Verification Failed"
-                                EmvPinConstraints.EMV_VERIFY_NO_PASSWORD -> "Pin was not entered"
-                                EmvPinConstraints.EMV_VERIFY_NO_PINPAD -> "No PinPad"
-                                EmvPinConstraints.EMV_VERIFY_PIN_BLOCK -> "PinBlock Error"
-                                else -> "Unexpected PinPad Error"
-                            }
-                            transEnd(verifyResult, message = pinErrorMessage)
-                        }
-                    })
-                    showDialog()
-                }
-            }
+            mutableLiveData.postValue(p0)
+            callPinPadDialog(activity, p0) {}
         }
 
         override fun onRequestOnlineProcess(dataBundle: Bundle) {
-            Log.e(logTag, "GOT HERE")
+            Log.d("DATA_TAG_BUNDLE_1", dataBundle.toString())
             isOnline = true
             var buff = dataBundle.getByteArray(EmvOnlineRequestConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
@@ -214,7 +188,6 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onTransactionResult(result: Int, resultData: Bundle?) {
-            Log.d("TAG", "GOT HERE hehe")
             var buff = resultData?.getByteArray(EmvProcessResultConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
 
@@ -250,7 +223,6 @@ class CardReaderService @JvmOverloads constructor(
                     buff = tlvBuilder.buildArray()
                 }
                 PosEmvErrCode.EMV_UNENCRYPTED -> {
-
                 }
                 else -> {
                     Log.d(logTag, "EncryptResult :$encryptResult")
@@ -294,24 +266,117 @@ class CardReaderService @JvmOverloads constructor(
                 }
             }
             if (emitter.isDisposed.not()) {
-                emitter.onNext(
-                    CardReaderEvent.CardRead(
-                        CardReadResult(
-                            result,
-                            transactionData
-                        ).apply {
-                            if (::cardPinBlock.isInitialized.not()) {
-                                transEnd(-1, "Did not request pinblock")
-                                return
+                if (cardType == DEV_PICC) {
+                    val aidTag = BerTag("84")
+                    val cardPanTag = BerTag("5A")
+                    val cardPan = tlvs.find(cardPanTag).hexValue
+                    val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
+                    if (isVisaCard) {
+                        CustomPasswordDialog(
+                            activity,
+                            cardPan,
+                            object : CustomPasswordDialog.Listener {
+                                override fun onConfirm(pinBlock: String?) {
+                                    if (pinBlock != null) {
+                                        cardPinBlock = pinBlock
+                                    }
+                                    emitter.onNext(
+                                        CardReaderEvent.CardRead(
+                                            CardReadResult(
+                                                result,
+                                                transactionData
+                                            ).apply {
+                                                encryptedPinBlock = cardPinBlock
+                                            }
+                                        )
+                                    )
+                                }
+
+                                override fun onError(message: String?) {
+//                                TODO("Not yet implemented")
+                                }
                             }
-                            encryptedPinBlock = cardPinBlock
-                        })
-                )
+                        )
+                    } else {
+                        handleOnNextEmissionForCardResult(result)
+                    }
+                } else {
+                    handleOnNextEmissionForCardResult(result)
+                }
+
                 emitter.onComplete()
                 emvCoreManager.stopTransaction()
             }
         }
+    }
 
+    private fun handleOnNextEmissionForCardResult(result: Int) {
+        emitter.onNext(
+            CardReaderEvent.CardRead(
+                CardReadResult(
+                    result,
+                    transactionData
+                ).apply {
+                    if (::cardPinBlock.isInitialized.not()) {
+                        transEnd(-1, "Did not request pinblock")
+                        return
+                    }
+                    encryptedPinBlock = cardPinBlock
+                }
+            )
+        )
+    }
+
+    private fun callPinPadDialog(activity: Activity, p0: Bundle?, callback: () -> Unit) {
+        Handler(Looper.getMainLooper()).post {
+            val isIcSlot = cardType == DEV_ICC
+            passwordDialog = PasswordDialog(
+                activity,
+                isIcSlot,
+                p0,
+                DeviceConfig.TPKIndex,
+                keyMode
+            )
+                .apply {
+                    setPinListener(object : PasswordDialog.Listener {
+                        override fun onConfirm(
+                            verifyResult: Int,
+                            pinBlock: ByteArray?,
+                            pinKsn: ByteArray?
+                        ) {
+                            cardPinBlock = ""
+                            pinBlock?.let {
+                                cardPinBlock =
+                                    HexUtil.toHexString(it).toLowerCase(Locale.getDefault())
+                                callback()
+                            }
+                            emvCoreManager.onSetConfirmPin(Bundle())
+                        }
+
+                        override fun onError(verifyResult: Int, pinTryCntOut: Int) {
+                            val pinErrorMessage = when (verifyResult) {
+                                EmvPinConstraints.EMV_VERIFY_PIN_ERROR -> {
+                                    "Pin Verification Failed"
+                                }
+                                EmvPinConstraints.EMV_VERIFY_NO_PASSWORD -> {
+                                    "Pin was not entered"
+                                }
+                                EmvPinConstraints.EMV_VERIFY_NO_PINPAD -> {
+                                    "No PinPad"
+                                }
+                                EmvPinConstraints.EMV_VERIFY_PIN_BLOCK -> {
+                                    "PinBlock Error"
+                                }
+                                else -> {
+                                    "Unexpected PinPad Error"
+                                }
+                            }
+                            transEnd(verifyResult, message = pinErrorMessage)
+                        }
+                    })
+                    showDialog()
+                }
+        }
     }
 
     fun initiateICCCardPayment() = initiateICCCardPayment(0, 0)
@@ -354,15 +419,12 @@ class CardReaderService @JvmOverloads constructor(
         val ret = emvCoreManager.startTransaction(reqData, emvCoreListener)
         when {
             PosEmvErrCode.EMV_CANCEL == ret -> {
-                Log.e(logTag, "start Transaction cancel")
                 transEnd(ret, "start Transaction cancel")
             }
             PosEmvErrCode.EXCEPTION_ERR == ret -> {
-                Log.e(logTag, "start Transaction exception error")
                 transEnd(ret, "start Transaction exception error")
             }
             PosEmvErrCode.EMV_ENCRYPT_ERROR == ret -> {
-                Log.e(logTag, "start Transaction encrypt error")
                 transEnd(ret, "start Transaction encrypt error")
             }
         }
@@ -370,8 +432,9 @@ class CardReaderService @JvmOverloads constructor(
 
     fun transEnd(errorCode: Int = PosEmvErrCode.EMV_CANCEL, message: String = "POS Cancel Error") {
         emvCoreManager.stopTransaction()
-        if (emitter.isDisposed.not())
+        if (emitter.isDisposed.not()) {
             emitter.onError(POSException(errorCode, message))
+        }
     }
 
     override fun showPinPad() {

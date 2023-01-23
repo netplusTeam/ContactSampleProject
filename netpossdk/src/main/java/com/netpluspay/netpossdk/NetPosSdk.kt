@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.Log
 import com.netpluspay.netpossdk.emv.param.EmvParam
 import com.netpluspay.netpossdk.utils.DeviceConfig
+import com.netpluspay.netpossdk.utils.GlobalData
 import com.netpluspay.netpossdk.utils.TerminalParameters
 import com.netpluspay.netpossdk.utils.TripleDES
 import com.netpluspay.netpossdk.utils.tlv.HexUtil
@@ -34,12 +35,12 @@ object NetPosSdk {
 
     @JvmStatic
     private fun initTerminalConfiguration() {
-        if (Build.MODEL.equals("PRO", true) || Build.MODEL.equals("P3", true))
+        if (Build.MODEL.equals("PRO", true) || Build.MODEL.equals("P3", true)) {
             DeviceConfig.InitDevice(DeviceConfig.DEVICE_PRO)
-        else
+        } else {
             DeviceConfig.InitDevice(DeviceConfig.DEVICE_MINI)
+        }
     }
-
 
     @JvmStatic
     fun getPrinterManager(context: Context): POIPrinterManage = POIPrinterManage.getDefault(context)
@@ -99,28 +100,42 @@ object NetPosSdk {
     @JvmStatic
     fun writeTpkKey(keyIndex: Int, keyData: String): Int = try {
         val pedKeyInfo = PedKeyInfo(
-            0, 0, POIHsmManage.PED_TPK, keyIndex, 0, 16,
+            0,
+            0,
+            POIHsmManage.PED_TPK,
+            keyIndex,
+            0,
+            16,
             HexUtil.parseHex(keyData)
         )
+        saveInSharedPrefs(keyData)
         POIHsmManage.getDefault().PedWriteKey(pedKeyInfo, PedKcvInfo(0, ByteArray(5)))
     } catch (exception: Exception) {
         exception.printStackTrace()
         -1
     }
 
+    private fun saveInSharedPrefs(keyData: String) {
+        GlobalData.setKey(keyData)
+    }
+
+    public fun getClearKey() = GlobalData.getKey()
+
     @JvmStatic
     fun writeDukptKey(keyIndex: Int, keyData: String, ksnData: String): Int {
         val key = HexUtil.parseHex(keyData)
         val ksn = HexUtil.parseHex(ksnData)
         return POIHsmManage.getDefault().PedWriteTIK(
-            keyIndex, 0, key.size, key, ksn,
+            keyIndex,
+            0,
+            key.size,
+            key,
+            ksn,
             PedKcvInfo(5, ByteArray(5))
         )
     }
 
-
     @JvmStatic
     fun writeTpkKey(keyIndex: Int, encryptedKeyData: String, masterKey: String) =
         writeTpkKey(keyIndex, keyData = TripleDES.decrypt(encryptedKeyData, masterKey))
-
 }

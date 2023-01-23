@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Netpos Library</string>
+    <string name="read_card">Read Card</string>
 </resources>

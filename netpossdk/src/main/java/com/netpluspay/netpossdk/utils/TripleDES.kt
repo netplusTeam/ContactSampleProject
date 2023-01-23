@@ -6,6 +6,7 @@ import javax.crypto.*
 import javax.crypto.spec.SecretKeySpec
 import kotlin.experimental.and
 import kotlin.experimental.xor
+
 /**
  * @author Derek
  */
@@ -53,8 +54,8 @@ internal object TripleDES {
      */
     @JvmStatic
     fun encrypt(data: ByteArray?, key: ByteArray): ByteArray? {
-//		Log.d(TripleDES.class.getSimpleName(), "Data: " +  Hex2String(data));
-//		Log.d(TripleDES.class.getSimpleName(), "Key: " +  Hex2String(key));
+// 		Log.d(TripleDES.class.getSimpleName(), "Data: " +  Hex2String(data));
+// 		Log.d(TripleDES.class.getSimpleName(), "Key: " +  Hex2String(key));
         val sk: SecretKey = SecretKeySpec(GetKey(key), "DESede")
         try {
             val cipher = Cipher.getInstance("DESede/ECB/NoPadding")
@@ -122,6 +123,7 @@ internal object TripleDES {
         }
         return null
     }
+
     @JvmStatic
     fun encrypt_CBC(data: ByteArray, key: ByteArray, IV: ByteArray): ByteArray? {
         val sk: SecretKey = SecretKeySpec(GetKey(key), "DESede")

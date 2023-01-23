@@ -14,7 +14,7 @@ public abstract class AndroidTerminalCardReaderFactory<T> {
 
     protected abstract void showPinPad();
 
-    /*
+    /**
      * method called after a card has been detected to read data from the detected card.
      * */
     protected abstract void readCard();

@@ -13,6 +13,7 @@ public class GlobalData {
     private static final String TRANS_SUPPORT_PICC = "trans_support_picc";
     private static final String TRANS_SUPPORT_MAG = "trans_support_mag";
     private static final String TRANS_ONLINE_RESULT = "trans_online_result";
+    private static final String KEY_TAG = "key_tag";
 
     private static final String TRANS_ENCRYPT_OPEN = "trans_encrypt_open";
     private static final String TRANS_ENCRYPT_KEY_TYPE = "trans_encrypt_key_type";
@@ -60,6 +61,14 @@ public class GlobalData {
 
     public static boolean isTransSupportMag() {
         return SPUtils.getInstance().getBoolean(TRANS_SUPPORT_MAG, true);
+    }
+
+    public static void setKey(String key) {
+        SPUtils.getInstance().put(KEY_TAG, key);
+    }
+
+    public static String getKey() {
+        return SPUtils.getInstance().getString(KEY_TAG, "");
     }
 
     public static String getTransCounter() {

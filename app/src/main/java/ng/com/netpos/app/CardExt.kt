@@ -5,12 +5,12 @@ package ng.com.netpos.app
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.*
+import android.util.Log
 import android.widget.Toast
 import com.netpluspay.netpossdk.emv.CardReadResult
 import com.netpluspay.netpossdk.emv.CardReaderEvent
 import com.netpluspay.netpossdk.emv.CardReaderService
 import com.pos.sdk.emvcore.POIEmvCoreManager.*
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -41,6 +41,7 @@ fun showCardDialog(
         .subscribe({
             when (it) {
                 is CardReaderEvent.CardRead -> {
+                    Log.d("STILL_TROUBLESHOOTING", "Got here")
                     readerListener.invoke(it.data)
                 }
                 is CardReaderEvent.CardDetected -> {
@@ -50,7 +51,8 @@ fun showCardDialog(
                         else -> "MAGNETIC STRIPE"
                     }
                     dialog.setMessage("Reading Card with $mode Please Wait")
-                    Timber.e( "Card Detected")
+                    Timber.e("Card Detected")
+                    Timber.e("Reading Card with $mode Please Wait")
                 }
             }
         }, {
@@ -58,10 +60,9 @@ fun showCardDialog(
                 it.printStackTrace()
                 Toast.makeText(context, it.localizedMessage, Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
-                Timber.e( it.localizedMessage ?: "Fatal Error")
+                Timber.e(it.localizedMessage ?: "Fatal Error")
                 Timber.e(it)
             }
-
         }, {
             dialog.dismiss()
         })
@@ -74,8 +75,6 @@ fun showCardDialog(
     compositeDisposable.let {
         c.disposeWith(it)
     }
-
-
 }
 
 fun Disposable.disposeWith(compositeDisposable: CompositeDisposable) = compositeDisposable.add(this)

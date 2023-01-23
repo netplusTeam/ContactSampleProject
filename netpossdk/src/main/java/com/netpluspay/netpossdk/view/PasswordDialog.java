@@ -31,6 +31,7 @@ import com.pos.sdk.security.POIHsmManage;
 import com.pos.sdk.security.PedRsaPinKey;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class PasswordDialog {
@@ -87,12 +88,15 @@ public class PasswordDialog {
         switch (mBundle.getInt(EmvPinConstraints.PINTYPE, -1)) {
             case POIEmvCoreManager.PIN_TYPE_ONLINE_PIN:
                 pinType = OnlineEncryptPin;
+                Log.d("GROUPED_CHECKER_1", String.valueOf(OnlineEncryptPin));
                 break;
             case POIEmvCoreManager.PIN_TYPE_OFF_PIN:
                 pinType = OfflinePin;
+                Log.d("GROUPED_CHECKER_2", String.valueOf(OfflinePin));
                 break;
             case POIEmvCoreManager.PIN_TYPE_OFF_CIPHER_PIN:
                 pinType = OfflineEncryptPin;
+                Log.d("GROUPED_CHECKER_3", String.valueOf(OfflineEncryptPin));
                 break;
             default:
                 break;
@@ -101,30 +105,37 @@ public class PasswordDialog {
         if (mBundle.containsKey(EmvPinConstraints.PINENCRYPTCARD)) {
             isEncryptCard = true;
             pinCard = mBundle.getString(EmvPinConstraints.PINENCRYPTCARD);
+            Log.d("GROUPED_CHECKER_4", pinCard);
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINCARD)) {
             pinCard = mBundle.getString(EmvPinConstraints.PINCARD);
+            Log.d("GROUPED_CHECKER_5", pinCard);
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINALLOWBYPASS)) {
             pinByPass = mBundle.getBoolean(EmvPinConstraints.PINALLOWBYPASS);
+            Log.d("GROUPED_CHECKER_6", String.valueOf(pinByPass));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINOFFTRYCNT)) {
             pinTryCnt = mBundle.getInt(EmvPinConstraints.PINOFFTRYCNT);
+            Log.d("GROUPED_CHECKER_7", String.valueOf(pinTryCnt));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINPUBEXP)) {
             pinExpData = mBundle.getByteArray(EmvPinConstraints.PINPUBEXP);
+            Log.d("GROUPED_CHECKER_8", Arrays.toString(pinExpData));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINPUBMODEL)) {
             pinModData = mBundle.getByteArray(EmvPinConstraints.PINPUBMODEL);
+            Log.d("GROUPED_CHECKER_9", Arrays.toString(pinModData));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINCARDRND)) {
             pinIccRandomData = mBundle.getByteArray(EmvPinConstraints.PINCARDRND);
+            Log.d("GROUPED_CHECKER_10", Arrays.toString(pinIccRandomData));
         }
 
         switch (pinType) {
