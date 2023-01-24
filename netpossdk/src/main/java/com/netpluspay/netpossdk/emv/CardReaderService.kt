@@ -261,23 +261,21 @@ class CardReaderService @JvmOverloads constructor(
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
                     if (isVisaCard) {
-                        Handler(Looper.getMainLooper()).post {
-                            handleVisaContactlessImpl(
-                                activity,
-                                cardPan,
-                                result,
-                                buff,
-                                object : ListenerForVisaContactlessReader<CardReadResult> {
-                                    override fun doneReadingCard(cardReadResult: CardReadResult) {
-                                        emitter.onNext(
-                                            CardReaderEvent.CardRead(
-                                                cardReadResult
-                                            )
+                        handleVisaContactlessImpl(
+                            activity,
+                            cardPan,
+                            result,
+                            buff,
+                            object : ListenerForVisaContactlessReader<CardReadResult> {
+                                override fun doneReadingCard(cardReadResult: CardReadResult) {
+                                    emitter.onNext(
+                                        CardReaderEvent.CardRead(
+                                            cardReadResult
                                         )
-                                    }
+                                    )
                                 }
-                            )
-                        }
+                            }
+                        )
                     } else {
                         handleOnNextEmissionForCardResult(result)
                     }
@@ -297,33 +295,35 @@ class CardReaderService @JvmOverloads constructor(
         buff: ByteArray?,
         listener: ListenerForVisaContactlessReader<CardReadResult>
     ) {
-        val pinDialog = CustomPasswordDialog(
-            activity,
-            cardPan,
-            object : CustomPasswordDialog.Listener {
-                override fun onConfirm(pinBlock: String?) {
-                    if (pinBlock != null) {
-                        transactionData.transData = buff
-                        cardPinBlock = pinBlock
-                        emvCoreManager.onSetConfirmPin(Bundle())
-                        val cardResult = CardReadResult(
-                            result,
-                            transactionData
-                        ).apply {
-                            encryptedPinBlock = pinBlock
+        Handler(Looper.getMainLooper()).post {
+            val pinDialog = CustomPasswordDialog(
+                activity,
+                cardPan,
+                object : CustomPasswordDialog.Listener {
+                    override fun onConfirm(pinBlock: String?) {
+                        if (pinBlock != null) {
+                            transactionData.transData = buff
+                            cardPinBlock = pinBlock
+                            emvCoreManager.onSetConfirmPin(Bundle())
+                            val cardResult = CardReadResult(
+                                result,
+                                transactionData
+                            ).apply {
+                                encryptedPinBlock = pinBlock
+                            }
+                            listener.doneReadingCard(cardResult)
+                        } else {
+                            handleOnNextEmissionForCardResult(result)
                         }
-                        listener.doneReadingCard(cardResult)
-                    } else {
-                        handleOnNextEmissionForCardResult(result)
+                    }
+
+                    override fun onError(message: String?) {
+                        transEnd(-1, "Pin pad Error")
                     }
                 }
-
-                override fun onError(message: String?) {
-                    transEnd(-1, "Pin pad Error")
-                }
-            }
-        )
-        pinDialog.showDialog()
+            )
+            pinDialog.showDialog()
+        }
     }
 
     private fun handleOnNextEmissionForCardResult(result: Int) {
