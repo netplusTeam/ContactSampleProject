@@ -41,10 +41,11 @@ fun showCardDialog(
         .subscribe({
             when (it) {
                 is CardReaderEvent.CardRead -> {
-                    Log.d("STILL_TROUBLESHOOTING", "Got here")
+                    Log.d("DATA_CARD_1=>", "card read successfully")
                     readerListener.invoke(it.data)
                 }
                 is CardReaderEvent.CardDetected -> {
+                    Log.d("DATA_CARD_2=>", "CARD DETECTEDI OOOO")
                     val mode = when (it.mode) {
                         DEV_ICC -> "EMV"
                         DEV_PICC -> "EMV Contactless"

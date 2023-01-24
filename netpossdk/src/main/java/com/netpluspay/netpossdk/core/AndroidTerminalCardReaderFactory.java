@@ -7,16 +7,16 @@ public abstract class AndroidTerminalCardReaderFactory<T> {
      */
     public abstract T initiateICCCardPayment(long amount, long cashBackAmount);
 
-    /*
+    /**
      * method called after initiateICCCardPayment to scan for cards.
-     * */
+     */
     protected abstract void scanForCard();
 
     protected abstract void showPinPad();
 
     /**
      * method called after a card has been detected to read data from the detected card.
-     * */
+     */
     protected abstract void readCard();
 
     protected abstract void updateICCardData(int cardReadResultCode);
