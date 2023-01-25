@@ -108,7 +108,6 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onConfirmCardInfo(p0: Int, p1: String?) {
-            Log.d("onConfirmCardInfo", "onConfirmCardInfo IS BEING CALLED")
             emvCoreManager.onSetConfirmCardInfo(true)
         }
 
@@ -177,7 +176,6 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onTransactionResult(result: Int, resultData: Bundle?) {
-            Log.d("THREAD===>", Thread.currentThread().name)
             var buff = resultData?.getByteArray(EmvProcessResultConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
 
