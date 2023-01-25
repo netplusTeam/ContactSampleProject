@@ -21,7 +21,6 @@ import androidx.constraintlayout.widget.Group;
 import com.netpluspay.netpossdk.NetPosSdk;
 import com.netpluspay.netpossdk.R;
 import com.netpluspay.netpossdk.utils.ExtensionFunctions;
-import com.netpluspay.netpossdk.utils.TripleDES;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +29,7 @@ import java.util.Random;
 
 
 public class CustomPasswordDialog {
+    public String pinBlockToBeReturned = "";
     public static final int OfflinePin = 11;
     public static final int OnlineEncryptPin = 22;
     public static final int OfflineEncryptPin = 33;
@@ -55,7 +55,7 @@ public class CustomPasswordDialog {
     private String message;
 
 
-    private Dialog dialog;
+    public Dialog dialog;
     private TextView tvTitle, tvMessage;
     private EditText etPin;
     private Button btnConfirm;
@@ -132,13 +132,15 @@ public class CustomPasswordDialog {
                 Toast.makeText(context, "Pin too short", Toast.LENGTH_SHORT).show();
                 return;
             }
-            pinListener.onConfirm(encodePinBlock(etPin.getText().toString(), pan, v.getContext()));
+            pinBlockToBeReturned = encodePinBlock(etPin.getText().toString(), pan, v.getContext());
+            pinListener.onConfirm(pinBlockToBeReturned);
             dialog.cancel();
         });
 
         tvTitle.setText(title);
         tvMessage.setText(message);
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+//        dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(view);
         Window window = dialog.getWindow();

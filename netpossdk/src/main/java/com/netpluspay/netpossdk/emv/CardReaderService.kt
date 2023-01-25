@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.google.gson.Gson
 import com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory
-import com.netpluspay.netpossdk.emv.contract.ListenerForVisaContactlessReader
 import com.netpluspay.netpossdk.emv.data.TransactionData
 import com.netpluspay.netpossdk.errors.POSException
 import com.netpluspay.netpossdk.utils.DeviceConfig
@@ -25,6 +23,7 @@ import com.pos.sdk.utils.PosUtils
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import java.util.*
+import java.util.concurrent.CountDownLatch
 
 class CardReaderService @JvmOverloads constructor(
     activity: Activity,
@@ -178,6 +177,7 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onTransactionResult(result: Int, resultData: Bundle?) {
+            Log.d("THREAD===>", Thread.currentThread().name)
             var buff = resultData?.getByteArray(EmvProcessResultConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
 
@@ -262,22 +262,23 @@ class CardReaderService @JvmOverloads constructor(
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
                     if (isVisaCard) {
-                        handleVisaContactlessImpl(
+                        val pinBlockValue = handleVisaContactlessImpl(
                             activity,
                             cardPan,
                             result,
-                            buff,
-                            object : ListenerForVisaContactlessReader<CardReadResult> {
-                                override fun doneReadingCard(cardReadResult: CardReadResult) {
-                                    emitter.onNext(
-                                        CardReaderEvent.CardRead(
-                                            cardReadResult
-                                        ).apply {
-                                            Log.d("ON_NEXT_1", "Called")
-                                        }
-                                    )
-                                }
-                            }
+                            buff
+                        )
+                        cardPinBlock = pinBlockValue
+                        val cardResult = CardReadResult(
+                            result,
+                            transactionData
+                        ).apply {
+                            encryptedPinBlock = pinBlockValue
+                        }
+                        emitter.onNext(
+                            CardReaderEvent.CardRead(
+                                cardResult
+                            )
                         )
                     } else {
                         handleOnNextEmissionForCardResult(result)
@@ -295,38 +296,39 @@ class CardReaderService @JvmOverloads constructor(
         activity: Activity,
         cardPan: String,
         result: Int,
-        buff: ByteArray?,
-        listener: ListenerForVisaContactlessReader<CardReadResult>
-    ) {
-        Handler(Looper.getMainLooper()).post {
-            val pinDialog = CustomPasswordDialog(
-                activity,
-                cardPan,
-                object : CustomPasswordDialog.Listener {
-                    override fun onConfirm(pinBlock: String?) {
-                        if (pinBlock != null) {
-                            transactionData.transData = buff
-                            cardPinBlock = pinBlock
-                            emvCoreManager.onSetConfirmPin(Bundle())
-                            val cardResult = CardReadResult(
-                                result,
-                                transactionData
-                            ).apply {
-                                encryptedPinBlock = pinBlock
+        buff: ByteArray?
+    ): String {
+        val latch = CountDownLatch(1)
+        var pinBlockValue = ""
+        Handler(Looper.getMainLooper())
+            .post {
+                val pinDialog = CustomPasswordDialog(
+                    activity,
+                    cardPan,
+                    object : CustomPasswordDialog.Listener {
+                        override fun onConfirm(pinBlock: String?) {
+                            if (pinBlock != null) {
+                                transactionData.transData = buff
+                                cardPinBlock = pinBlock
+                                pinBlockValue = pinBlock
+                            } else {
+                                handleOnNextEmissionForCardResult(result)
                             }
-                            listener.doneReadingCard(cardResult)
-                        } else {
-                            handleOnNextEmissionForCardResult(result)
+                        }
+
+                        override fun onError(message: String?) {
+                            transEnd(-1, "Pin pad Error")
                         }
                     }
-
-                    override fun onError(message: String?) {
-                        transEnd(-1, "Pin pad Error")
-                    }
+                )
+                pinDialog.dialog.setOnDismissListener {
+                    pinBlockValue = pinDialog.pinBlockToBeReturned
+                    latch.countDown()
                 }
-            )
-            pinDialog.showDialog()
-        }
+                pinDialog.showDialog()
+            }
+        latch.await()
+        return pinBlockValue
     }
 
     private fun handleOnNextEmissionForCardResult(result: Int) {
