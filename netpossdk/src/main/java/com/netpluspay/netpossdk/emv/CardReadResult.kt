@@ -1,6 +1,7 @@
 package com.netpluspay.netpossdk.emv
 
 import android.util.Log
+import com.google.gson.Gson
 import com.netpluspay.netpossdk.emv.data.EmvCard
 import com.netpluspay.netpossdk.emv.data.TransactionData
 import com.netpluspay.netpossdk.utils.HexDump

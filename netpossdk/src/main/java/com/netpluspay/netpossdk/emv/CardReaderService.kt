@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.google.gson.Gson
 import com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory
 import com.netpluspay.netpossdk.emv.contract.ListenerForVisaContactlessReader
 import com.netpluspay.netpossdk.emv.data.TransactionData
@@ -268,6 +269,7 @@ class CardReaderService @JvmOverloads constructor(
                             buff,
                             object : ListenerForVisaContactlessReader<CardReadResult> {
                                 override fun doneReadingCard(cardReadResult: CardReadResult) {
+                                    Log.d("DATA_DATA_Log=>", cardReadResult.toString())
                                     emitter.onNext(
                                         CardReaderEvent.CardRead(
                                             cardReadResult

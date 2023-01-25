@@ -25,11 +25,6 @@ class MainActivity : ComponentActivity() {
         NetPosSdk.writeTpkKey(DeviceConfig.TPKIndex, "6943DD4434E0B3C0D808D0FE2A590CD9", this)
         btn.setOnClickListener {
             showCardDialog(this, 20, 0, compositeDisposable) { result ->
-                Log.d("RESULT_DDD_1", result.toString())
-                Log.d("RESULT_DDD_2", result.nibssIccSubset)
-                Log.d("RESULT_DDD_3", "${result.applicationPANSequenceNumber}")
-                Log.d("RESULT_DDD_4", "${result.track2Data}")
-                Log.d("RESULT_DDD_5", "${result.encryptedPinBlock}")
                 findViewById<TextView>(R.id.scan_result).text = result.toString()
             }
         }
