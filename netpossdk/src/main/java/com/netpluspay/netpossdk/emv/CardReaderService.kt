@@ -268,10 +268,13 @@ class CardReaderService @JvmOverloads constructor(
                             buff,
                             object : ListenerForVisaContactlessReader<CardReadResult> {
                                 override fun doneReadingCard(cardReadResult: CardReadResult) {
+                                    Log.d("data_checker_1", cardReadResult.toString())
                                     emitter.onNext(
                                         CardReaderEvent.CardRead(
                                             cardReadResult
-                                        )
+                                        ).apply {
+                                            Log.d("ON_NEXT_1", "Called")
+                                        }
                                     )
                                 }
                             }

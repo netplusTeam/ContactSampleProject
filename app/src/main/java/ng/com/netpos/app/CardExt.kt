@@ -4,13 +4,13 @@ package ng.com.netpos.app
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.*
+import android.content.* // ktlint-disable no-wildcard-imports
 import android.util.Log
 import android.widget.Toast
 import com.netpluspay.netpossdk.emv.CardReadResult
 import com.netpluspay.netpossdk.emv.CardReaderEvent
 import com.netpluspay.netpossdk.emv.CardReaderService
-import com.pos.sdk.emvcore.POIEmvCoreManager.*
+import com.pos.sdk.emvcore.POIEmvCoreManager.* // ktlint-disable no-wildcard-imports
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
