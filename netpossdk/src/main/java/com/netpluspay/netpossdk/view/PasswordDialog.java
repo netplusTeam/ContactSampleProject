@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 
+import com.google.gson.Gson;
 import com.netpluspay.netpossdk.R;
 import com.netpluspay.netpossdk.utils.DeviceConfig;
 import com.netpluspay.netpossdk.utils.tlv.HexUtil;
@@ -88,54 +89,55 @@ public class PasswordDialog {
         switch (mBundle.getInt(EmvPinConstraints.PINTYPE, -1)) {
             case POIEmvCoreManager.PIN_TYPE_ONLINE_PIN:
                 pinType = OnlineEncryptPin;
-                Log.d("GROUPED_CHECKER_1", String.valueOf(OnlineEncryptPin));
                 break;
             case POIEmvCoreManager.PIN_TYPE_OFF_PIN:
                 pinType = OfflinePin;
-                Log.d("GROUPED_CHECKER_2", String.valueOf(OfflinePin));
                 break;
             case POIEmvCoreManager.PIN_TYPE_OFF_CIPHER_PIN:
                 pinType = OfflineEncryptPin;
-                Log.d("GROUPED_CHECKER_3", String.valueOf(OfflineEncryptPin));
                 break;
             default:
                 break;
         }
 
+        Log.d("CHECKING_PIN_TYPE", String.valueOf(mBundle.getInt(EmvPinConstraints.PINTYPE, -1)));
+        Log.d("CHECKING_ALL", String.valueOf(mBundle));
+        Log.d("CHECKING_CLONE", new Gson().toJson(mBundle.clone()));
+
         if (mBundle.containsKey(EmvPinConstraints.PINENCRYPTCARD)) {
             isEncryptCard = true;
             pinCard = mBundle.getString(EmvPinConstraints.PINENCRYPTCARD);
-            Log.d("GROUPED_CHECKER_4", pinCard);
+            Log.d("CHECKING_PIN_E_CARD", pinCard);
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINCARD)) {
             pinCard = mBundle.getString(EmvPinConstraints.PINCARD);
-            Log.d("GROUPED_CHECKER_5", pinCard);
+            Log.d("CHECKING_PIN_CARD", pinCard);
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINALLOWBYPASS)) {
             pinByPass = mBundle.getBoolean(EmvPinConstraints.PINALLOWBYPASS);
-            Log.d("GROUPED_CHECKER_6", String.valueOf(pinByPass));
+            Log.d("CHECKING_PIN_BYPASS", String.valueOf(pinByPass));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINOFFTRYCNT)) {
             pinTryCnt = mBundle.getInt(EmvPinConstraints.PINOFFTRYCNT);
-            Log.d("GROUPED_CHECKER_7", String.valueOf(pinTryCnt));
+            Log.d("CHECKING_PIN_TRY_C_MA", String.valueOf(pinTryCnt));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINPUBEXP)) {
             pinExpData = mBundle.getByteArray(EmvPinConstraints.PINPUBEXP);
-            Log.d("GROUPED_CHECKER_8", Arrays.toString(pinExpData));
+            Log.d("CHECKING_PIN_EXP_D", Arrays.toString(pinExpData));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINPUBMODEL)) {
             pinModData = mBundle.getByteArray(EmvPinConstraints.PINPUBMODEL);
-            Log.d("GROUPED_CHECKER_9", Arrays.toString(pinModData));
+            Log.d("CHECKING_PIN_MOD_D", Arrays.toString(pinModData));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINCARDRND)) {
             pinIccRandomData = mBundle.getByteArray(EmvPinConstraints.PINCARDRND);
-            Log.d("GROUPED_CHECKER_10", Arrays.toString(pinIccRandomData));
+            Log.d("CHECKING_PIN_ICC_R_D", Arrays.toString(pinIccRandomData));
         }
 
         switch (pinType) {

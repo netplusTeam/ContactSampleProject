@@ -5,7 +5,6 @@ package ng.com.netpos.app
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.* // ktlint-disable no-wildcard-imports
-import android.util.Log
 import android.widget.Toast
 import com.netpluspay.netpossdk.emv.CardReadResult
 import com.netpluspay.netpossdk.emv.CardReaderEvent
@@ -41,19 +40,17 @@ fun showCardDialog(
         .subscribe({
             when (it) {
                 is CardReaderEvent.CardRead -> {
-                    Log.d("DATA_CARD_1=>", "card read successfully")
+                    Timber.d("READ_CARD_DATA=>%s", it.data.toString())
                     readerListener.invoke(it.data)
                 }
                 is CardReaderEvent.CardDetected -> {
-                    Log.d("DATA_CARD_2=>", "CARD DETECTEDI OOOO")
                     val mode = when (it.mode) {
                         DEV_ICC -> "EMV"
                         DEV_PICC -> "EMV Contactless"
                         else -> "MAGNETIC STRIPE"
                     }
                     dialog.setMessage("Reading Card with $mode Please Wait")
-                    Timber.e("Card Detected")
-                    Timber.e("Reading Card with $mode Please Wait")
+                    Timber.d("DETECTED_CARD_MODE=>%s", mode)
                 }
             }
         }, {
