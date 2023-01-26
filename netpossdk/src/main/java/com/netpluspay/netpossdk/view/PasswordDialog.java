@@ -103,7 +103,6 @@ public class PasswordDialog {
         Log.d("CHECKING_PIN_TYPE", String.valueOf(mBundle.getInt(EmvPinConstraints.PINTYPE, -1)));
         Log.d("CHECKING_ALL", String.valueOf(mBundle));
         Log.d("CHECKING_CLONE", new Gson().toJson(mBundle.clone()));
-
         if (mBundle.containsKey(EmvPinConstraints.PINENCRYPTCARD)) {
             isEncryptCard = true;
             pinCard = mBundle.getString(EmvPinConstraints.PINENCRYPTCARD);

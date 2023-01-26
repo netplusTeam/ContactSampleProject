@@ -12,7 +12,6 @@ import com.netpluspay.netpossdk.errors.POSException
 import com.netpluspay.netpossdk.utils.DeviceConfig
 import com.netpluspay.netpossdk.utils.GlobalData
 import com.netpluspay.netpossdk.utils.tlv.*
-import com.netpluspay.netpossdk.view.CustomPasswordDialog
 import com.netpluspay.netpossdk.view.MaterialDialog
 import com.netpluspay.netpossdk.view.PasswordDialog
 import com.pos.sdk.emvcore.IPosEmvCoreListener
@@ -24,7 +23,6 @@ import com.pos.sdk.utils.PosUtils
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import java.util.*
-import java.util.concurrent.CountDownLatch
 
 class CardReaderService @JvmOverloads constructor(
     activity: Activity,
@@ -123,7 +121,7 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onRequestOnlineProcess(dataBundle: Bundle) {
-            isOnline = true
+            isOnline = false
             var buff = dataBundle.getByteArray(EmvOnlineRequestConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
 
@@ -267,7 +265,7 @@ class CardReaderService @JvmOverloads constructor(
                         val modifiedBundle =
                             resultData?.let { modifyBundleForVisaContactless(it, cardPan) }
                         val isIcSlot = cardType == DEV_ICC
-                        val pinBlockValue = handleVisaContactlessImpl(
+                        handleVisaContactlessImpl(
                             activity,
                             cardPan,
                             result,
@@ -276,18 +274,7 @@ class CardReaderService @JvmOverloads constructor(
                             modifiedBundle!!,
                             keyMode
                         )
-                        cardPinBlock = pinBlockValue
-                        val cardResult = CardReadResult(
-                            result,
-                            transactionData
-                        ).apply {
-                            encryptedPinBlock = pinBlockValue
-                        }
-                        emitter.onNext(
-                            CardReaderEvent.CardRead(
-                                cardResult
-                            )
-                        )
+                        handleOnNextEmissionForCardResult(result)
                     } else {
                         handleOnNextEmissionForCardResult(result)
                     }
@@ -308,39 +295,12 @@ class CardReaderService @JvmOverloads constructor(
         iccSlot: Boolean,
         bundle: Bundle,
         keyMode: Int
-    ): String {
-        val latch = CountDownLatch(1)
-        var pinBlockValue = ""
+    ) {
         Handler(Looper.getMainLooper())
             .post {
                 val pinPadDialog = instantiatePasswordDialog(activity, iccSlot, bundle, keyMode) {}
-                val pinDialog = CustomPasswordDialog(
-                    activity,
-                    cardPan,
-                    object : CustomPasswordDialog.Listener {
-                        override fun onConfirm(pinBlock: String?) {
-                            if (pinBlock != null) {
-                                transactionData.transData = buff
-                                cardPinBlock = pinBlock
-                                pinBlockValue = pinBlock
-                            } else {
-                                handleOnNextEmissionForCardResult(result)
-                            }
-                        }
-
-                        override fun onError(message: String?) {
-                            transEnd(-1, "Pin pad Error")
-                        }
-                    }
-                )
-                pinDialog.dialog.setOnDismissListener {
-                    pinBlockValue = pinDialog.pinBlockToBeReturned
-                    latch.countDown()
-                }
-                pinDialog.showDialog()
+                pinPadDialog.showDialog()
             }
-        latch.await()
-        return pinBlockValue
     }
 
     private fun handleOnNextEmissionForCardResult(result: Int) {
@@ -498,6 +458,7 @@ class CardReaderService @JvmOverloads constructor(
         bundle: Bundle,
         cardPan: String
     ): Bundle = bundle.apply {
+        putInt(EmvPinConstraints.PINTYPE, 34)
         putString(EmvPinConstraints.PINCARD, cardPan)
         putBoolean(EmvPinConstraints.PINALLOWBYPASS, false)
         putInt(EmvPinConstraints.PINOFFTRYCNT, 0)
