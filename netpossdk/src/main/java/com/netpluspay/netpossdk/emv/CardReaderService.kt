@@ -23,6 +23,7 @@ import com.pos.sdk.utils.PosUtils
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import java.util.*
+import java.util.concurrent.CountDownLatch
 
 class CardReaderService @JvmOverloads constructor(
     activity: Activity,
@@ -259,13 +260,14 @@ class CardReaderService @JvmOverloads constructor(
                     val pinTryCountTag = BerTag("9F17")
                     val pinTryCounter = tlvs.find(pinTryCountTag)
                     Log.d("PIN_TRY_C", Gson().toJson(pinTryCounter))
+//                    val transactionData =
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
                     if (isVisaCard) {
                         val modifiedBundle =
                             resultData?.let { modifyBundleForVisaContactless(it, cardPan) }
                         val isIcSlot = cardType == DEV_ICC
-                        handleVisaContactlessImpl(
+                        val pinBlockValue = handleVisaContactlessImpl(
                             activity,
                             cardPan,
                             result,
@@ -274,7 +276,14 @@ class CardReaderService @JvmOverloads constructor(
                             modifiedBundle!!,
                             keyMode
                         )
-                        handleOnNextEmissionForCardResult(result)
+                        transactionData.transData = buff
+                        val cardReadResult = CardReadResult(result, transactionData).apply { encryptedPinBlock = pinBlockValue
+                        }
+                        emitter.onNext(
+                            CardReaderEvent.CardRead(
+                                cardReadResult
+                            )
+                        )
                     } else {
                         handleOnNextEmissionForCardResult(result)
                     }
@@ -295,12 +304,20 @@ class CardReaderService @JvmOverloads constructor(
         iccSlot: Boolean,
         bundle: Bundle,
         keyMode: Int
-    ) {
+    ): String {
+        val latch = CountDownLatch(1)
+        var pinBlockValue = ""
         Handler(Looper.getMainLooper())
             .post {
                 val pinPadDialog = instantiatePasswordDialog(activity, iccSlot, bundle, keyMode) {}
+                pinPadDialog.passwordDialog.setOnDismissListener {
+                    pinBlockValue = pinPadDialog.pinBlockValue
+                    latch.countDown()
+                }
                 pinPadDialog.showDialog()
             }
+        latch.await()
+        return pinBlockValue
     }
 
     private fun handleOnNextEmissionForCardResult(result: Int) {

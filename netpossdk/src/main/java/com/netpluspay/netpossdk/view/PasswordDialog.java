@@ -34,6 +34,7 @@ import com.pos.sdk.security.PedRsaPinKey;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PasswordDialog {
     public static final int OfflinePin = 11;
@@ -57,6 +58,8 @@ public class PasswordDialog {
     private byte[] pinModData;
     private byte[] pinExpData;
     private Listener pinListener;
+    public Dialog passwordDialog;
+    public String pinBlockValue = "";
 
     private String title;
     private String message;
@@ -71,7 +74,6 @@ public class PasswordDialog {
     private ImageView btnClear;
     private TextView btnEsc, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
     private Group groupKeyboard;
-
 
 
     public PasswordDialog(Activity context, boolean isIcSlot, Bundle mBundle, int tpkIndex, int keyMode) {
@@ -185,6 +187,7 @@ public class PasswordDialog {
         tvTitle.setText(title);
         tvMessage.setText(message);
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        passwordDialog = dialog;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(view);
         Window window = dialog.getWindow();
@@ -197,7 +200,6 @@ public class PasswordDialog {
         window.setGravity(Gravity.BOTTOM);
         dialog.show();
     }
-
 
 
     public void showDialog() {
@@ -531,6 +533,7 @@ public class PasswordDialog {
 
     private void onPinConfirm(int verifyResult, byte[] pinBlock, byte[] pinKsn) {
         if (pinListener != null) {
+            pinBlockValue = HexUtil.toHexString(pinBlock).toLowerCase(Locale.getDefault());
             pinListener.onConfirm(verifyResult, pinBlock, pinKsn);
             return;
         }
