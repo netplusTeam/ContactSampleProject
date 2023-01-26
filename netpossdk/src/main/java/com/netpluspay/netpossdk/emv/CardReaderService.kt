@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.google.gson.Gson
 import com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory
+import com.netpluspay.netpossdk.emv.constant.AppConstants.DEFAULT_PIN_ERROR_CODE
+import com.netpluspay.netpossdk.emv.constant.AppConstants.isPinErrorCode
 import com.netpluspay.netpossdk.emv.data.TransactionData
 import com.netpluspay.netpossdk.errors.POSException
 import com.netpluspay.netpossdk.utils.DeviceConfig
@@ -257,33 +258,36 @@ class CardReaderService @JvmOverloads constructor(
                 if (cardType == DEV_PICC) {
                     val aidTag = BerTag("84")
                     val cardPanTag = BerTag("5A")
-                    val pinTryCountTag = BerTag("9F17")
-                    val pinTryCounter = tlvs.find(pinTryCountTag)
-                    Log.d("PIN_TRY_C", Gson().toJson(pinTryCounter))
-//                    val transactionData =
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
                     if (isVisaCard) {
                         val modifiedBundle =
                             resultData?.let { modifyBundleForVisaContactless(it, cardPan) }
                         val isIcSlot = cardType == DEV_ICC
-                        val pinBlockValue = handleVisaContactlessImpl(
+                        val pinPadResult = handleVisaContactlessImpl(
                             activity,
-                            cardPan,
-                            result,
-                            buff,
                             isIcSlot,
                             modifiedBundle!!,
                             keyMode
                         )
-                        transactionData.transData = buff
-                        val cardReadResult = CardReadResult(result, transactionData).apply { encryptedPinBlock = pinBlockValue
-                        }
-                        emitter.onNext(
-                            CardReaderEvent.CardRead(
-                                cardReadResult
+                        val pinBlockValue = pinPadResult.first
+                        val errorResultCode = pinPadResult.second
+                        val isTherePinError = isPinErrorCode(errorResultCode)
+
+                        if (isTherePinError) {
+                            pinPadErrorCallBack(errorResultCode)
+                            return
+                        } else {
+                            transactionData.transData = buff
+                            val cardReadResult = CardReadResult(result, transactionData).apply {
+                                encryptedPinBlock = pinBlockValue
+                            }
+                            emitter.onNext(
+                                CardReaderEvent.CardRead(
+                                    cardReadResult
+                                )
                             )
-                        )
+                        }
                     } else {
                         handleOnNextEmissionForCardResult(result)
                     }
@@ -298,26 +302,26 @@ class CardReaderService @JvmOverloads constructor(
 
     private fun handleVisaContactlessImpl(
         activity: Activity,
-        cardPan: String,
-        result: Int,
-        buff: ByteArray?,
         iccSlot: Boolean,
         bundle: Bundle,
         keyMode: Int
-    ): String {
+    ): Pair<String, Int> {
         val latch = CountDownLatch(1)
         var pinBlockValue = ""
+        var errorResult = DEFAULT_PIN_ERROR_CODE
         Handler(Looper.getMainLooper())
             .post {
                 val pinPadDialog = instantiatePasswordDialog(activity, iccSlot, bundle, keyMode) {}
                 pinPadDialog.passwordDialog.setOnDismissListener {
                     pinBlockValue = pinPadDialog.pinBlockValue
+                    errorResult = pinPadDialog.transactionErrorCode
                     latch.countDown()
                 }
                 pinPadDialog.showDialog()
             }
         latch.await()
-        return pinBlockValue
+
+        return Pair(pinBlockValue, errorResult)
     }
 
     private fun handleOnNextEmissionForCardResult(result: Int) {
@@ -361,27 +365,31 @@ class CardReaderService @JvmOverloads constructor(
                 }
 
                 override fun onError(verifyResult: Int, pinTryCntOut: Int) {
-                    val pinErrorMessage = when (verifyResult) {
-                        EmvPinConstraints.EMV_VERIFY_PIN_ERROR -> {
-                            "Pin Verification Failed"
-                        }
-                        EmvPinConstraints.EMV_VERIFY_NO_PASSWORD -> {
-                            "Pin was not entered"
-                        }
-                        EmvPinConstraints.EMV_VERIFY_NO_PINPAD -> {
-                            "No PinPad"
-                        }
-                        EmvPinConstraints.EMV_VERIFY_PIN_BLOCK -> {
-                            "PinBlock Error"
-                        }
-                        else -> {
-                            "Unexpected PinPad Error"
-                        }
-                    }
-                    transEnd(verifyResult, message = pinErrorMessage)
+                    pinPadErrorCallBack(verifyResult)
                 }
             })
         }
+
+    private fun pinPadErrorCallBack(errorCode: Int) {
+        val pinErrorMessage = when (errorCode) {
+            EmvPinConstraints.EMV_VERIFY_PIN_ERROR -> {
+                "Pin Verification Failed"
+            }
+            EmvPinConstraints.EMV_VERIFY_NO_PASSWORD -> {
+                "Pin was not entered"
+            }
+            EmvPinConstraints.EMV_VERIFY_NO_PINPAD -> {
+                "No PinPad"
+            }
+            EmvPinConstraints.EMV_VERIFY_PIN_BLOCK -> {
+                "PinBlock Error"
+            }
+            else -> {
+                "Unexpected PinPad Error"
+            }
+        }
+        transEnd(errorCode, message = pinErrorMessage)
+    }
 
     private fun callPinPadDialog(activity: Activity, p0: Bundle?, callback: () -> Unit) {
         Handler(Looper.getMainLooper()).post {
@@ -459,16 +467,6 @@ class CardReaderService @JvmOverloads constructor(
 
     override fun updateICCardData(p0: Int) {
         Log.e("TAG", "Unnecessary")
-    }
-
-    fun getWithTag(tag: String, tranData: TransactionData): String? {
-        return try {
-            val tlvList = BerTlvParser().parse(tranData.transData)
-            tlvList.find(BerTag(tag)).hexValue
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
     }
 
     private fun modifyBundleForVisaContactless(

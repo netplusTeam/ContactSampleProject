@@ -24,6 +24,7 @@ import androidx.constraintlayout.widget.Group;
 
 import com.google.gson.Gson;
 import com.netpluspay.netpossdk.R;
+import com.netpluspay.netpossdk.emv.constant.AppConstants;
 import com.netpluspay.netpossdk.utils.DeviceConfig;
 import com.netpluspay.netpossdk.utils.tlv.HexUtil;
 import com.pos.sdk.emvcore.POIEmvCoreManager;
@@ -60,6 +61,7 @@ public class PasswordDialog {
     private Listener pinListener;
     public Dialog passwordDialog;
     public String pinBlockValue = "";
+    public int transactionErrorCode = AppConstants.INSTANCE.DEFAULT_PIN_ERROR_CODE;
 
     private String title;
     private String message;
@@ -554,6 +556,7 @@ public class PasswordDialog {
 
     private void onPinError(int verifyResult, int pinTryCntOut) {
         if (pinListener != null) {
+            transactionErrorCode = verifyResult;
             pinListener.onError(verifyResult, pinTryCntOut);
             return;
         }
