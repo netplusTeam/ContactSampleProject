@@ -1,7 +1,6 @@
 package com.netpluspay.netpossdk.emv
 
 import android.util.Log
-import com.google.gson.Gson
 import com.netpluspay.netpossdk.emv.data.EmvCard
 import com.netpluspay.netpossdk.emv.data.TransactionData
 import com.netpluspay.netpossdk.utils.HexDump
@@ -9,7 +8,6 @@ import com.netpluspay.netpossdk.utils.tlv.BerTag
 import com.netpluspay.netpossdk.utils.tlv.BerTlvParser
 import com.netpluspay.netpossdk.utils.tlv.HexUtil
 import org.apache.commons.lang.StringUtils
-import kotlin.Exception
 
 class CardReadResult(
     private val readResultCode: Int,
@@ -51,7 +49,7 @@ class CardReadResult(
         private set
     var terminalCapabilities: String? = null
         private set
-    var cardholderVerificationMethod: String? = null
+    var cardholderVerificationMethod: String? = "420300"
         private set
     var terminalType: String? = null
         private set

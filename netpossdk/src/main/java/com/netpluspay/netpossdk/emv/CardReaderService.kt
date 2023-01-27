@@ -123,7 +123,7 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onRequestOnlineProcess(dataBundle: Bundle) {
-            isOnline = false
+            isOnline = true
             var buff = dataBundle.getByteArray(EmvOnlineRequestConstraints.EMVDATA)
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
 
@@ -181,7 +181,7 @@ class CardReaderService @JvmOverloads constructor(
             Log.d(logTag, "Emv Data :" + HexUtil.toHexString(buff))
 
             val tlvParser = BerTlvParser()
-            val tlvs = tlvParser.parse(buff)
+            val tlvs: BerTlvs = tlvParser.parse(buff)
             for (tlv in tlvs.list) {
                 Log.d(logTag, "Emv Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue)
             }
@@ -278,7 +278,6 @@ class CardReaderService @JvmOverloads constructor(
                             pinPadErrorCallBack(errorResultCode)
                             return
                         } else {
-                            transactionData.transData = buff
                             val cardReadResult = CardReadResult(result, transactionData).apply {
                                 encryptedPinBlock = pinBlockValue
                             }
