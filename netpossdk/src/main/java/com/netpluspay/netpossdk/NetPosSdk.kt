@@ -1,10 +1,15 @@
 package com.netpluspay.netpossdk
 
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.netpluspay.netpossdk.emv.param.EmvParam
-import com.netpluspay.netpossdk.utils.* // ktlint-disable no-wildcard-imports
+import com.netpluspay.netpossdk.utils.AppSharedPreferences
+import com.netpluspay.netpossdk.utils.DeviceConfig
+import com.netpluspay.netpossdk.utils.TerminalParameters
 import com.netpluspay.netpossdk.utils.tlv.HexUtil
 import com.pos.sdk.accessory.POIGeneralAPI
 import com.pos.sdk.emvcore.POIEmvCoreManager
@@ -16,6 +21,65 @@ import com.pos.sdk.security.PedKcvInfo
 import com.pos.sdk.security.PedKeyInfo
 
 object NetPosSdk {
+
+    @JvmStatic
+    fun setGenyzApnConfiguration(activity: Activity) {
+        val values = ContentValues()
+        values.put("name", "fast.m2m")
+        values.put("type", "default,supl")
+        activity.contentResolver.insert(Uri.parse("content://telephony/carriers"), values)
+
+        val selection = "current = 1"
+        values.clear()
+        values.put("apn_id", -1)
+        activity.contentResolver.update(
+            Uri.parse("content://telephony/carriers"),
+            values,
+            selection,
+            null
+        )
+    }
+
+    /*
+    fun genzyApnConfiguration(activity: Activity) {
+        var id = -1
+        val resolver: ContentResolver = activity.contentResolver
+        var values = ContentValues()
+
+        values.put("name", "fast.m2m") // choose APN name, like 3G Orange
+
+        values.put("apn", "fast.m2m") // choose APN address, like cellcom.wapu.co.il
+        // values.put("mcc", "your operator numeric high part") //for example 242
+
+        // values.put("mnc", "your operator numeric low part") //for example 501
+
+        // values.put("numeric", "your operator numeric") //for example 242501
+
+        var c: Cursor? = null
+        try {
+            // insert new row to APN table
+            val newRow = resolver.insert(APN_TABLE_URI, values)
+            if (newRow != null) {
+                c = resolver.query(newRow, null, null, null, null)
+
+                // obtain the APN id
+                val index: Int = c.getColumnIndex("_id")
+                c.moveToFirst()
+                id = c.getShort(index)
+            }
+        } catch (e: java.lang.Exception) {
+            e.localizedMessage?.let { Log.d("APN_SETTINGS_ERROR", it) }
+        }
+        values = ContentValues()
+        values.put("apn_id", id)
+
+        try {
+            resolver.update(PREFERRED_APN_URI, values, null, null)
+        } catch (e: java.lang.Exception) {
+            e.localizedMessage?.let { Log.d("ERROR_APN_SETTINGS", it) }
+        }
+    }
+    */
 
     @JvmStatic
     fun init() {

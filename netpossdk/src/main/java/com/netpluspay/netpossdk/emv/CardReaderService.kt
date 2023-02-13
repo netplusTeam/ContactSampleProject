@@ -12,12 +12,12 @@ import com.netpluspay.netpossdk.emv.data.TransactionData
 import com.netpluspay.netpossdk.errors.POSException
 import com.netpluspay.netpossdk.utils.DeviceConfig
 import com.netpluspay.netpossdk.utils.GlobalData
-import com.netpluspay.netpossdk.utils.tlv.*
+import com.netpluspay.netpossdk.utils.tlv.* // ktlint-disable no-wildcard-imports
 import com.netpluspay.netpossdk.view.MaterialDialog
 import com.netpluspay.netpossdk.view.PasswordDialog
 import com.pos.sdk.emvcore.IPosEmvCoreListener
 import com.pos.sdk.emvcore.POIEmvCoreManager
-import com.pos.sdk.emvcore.POIEmvCoreManager.*
+import com.pos.sdk.emvcore.POIEmvCoreManager.* // ktlint-disable no-wildcard-imports
 import com.pos.sdk.emvcore.PosEmvErrCode
 import com.pos.sdk.security.POIHsmManage
 import com.pos.sdk.utils.PosUtils

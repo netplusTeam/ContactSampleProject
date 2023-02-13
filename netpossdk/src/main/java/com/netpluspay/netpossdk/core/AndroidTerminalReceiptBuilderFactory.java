@@ -31,7 +31,7 @@ public abstract class AndroidTerminalReceiptBuilderFactory<T, K> {
     protected boolean isReprint;
     protected String mid;
     protected String footNote;
-    private StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     abstract protected T getThis();
 

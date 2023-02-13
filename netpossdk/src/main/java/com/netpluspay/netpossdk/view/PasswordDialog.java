@@ -22,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 
-import com.google.gson.Gson;
 import com.netpluspay.netpossdk.R;
 import com.netpluspay.netpossdk.emv.constant.AppConstants;
 import com.netpluspay.netpossdk.utils.DeviceConfig;
@@ -33,7 +32,6 @@ import com.pos.sdk.security.POIHsmManage;
 import com.pos.sdk.security.PedRsaPinKey;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -70,7 +68,7 @@ public class PasswordDialog {
     private PinEventListener pinEventListener;
 
     private Dialog dialog;
-    private TextView tvTitle, tvMessage;
+    private TextView tvTitle, tvMessage, tvAmount;
     private EditText etPin;
     private Button btnConfirm;
     private ImageView btnClear;
@@ -104,43 +102,33 @@ public class PasswordDialog {
                 break;
         }
 
-        Log.d("CHECKING_PIN_TYPE", String.valueOf(mBundle.getInt(EmvPinConstraints.PINTYPE, -1)));
-        Log.d("CHECKING_ALL", String.valueOf(mBundle));
-        Log.d("CHECKING_CLONE", new Gson().toJson(mBundle.clone()));
         if (mBundle.containsKey(EmvPinConstraints.PINENCRYPTCARD)) {
             isEncryptCard = true;
             pinCard = mBundle.getString(EmvPinConstraints.PINENCRYPTCARD);
-            Log.d("CHECKING_PIN_E_CARD", pinCard);
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINCARD)) {
             pinCard = mBundle.getString(EmvPinConstraints.PINCARD);
-            Log.d("CHECKING_PIN_CARD", pinCard);
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINALLOWBYPASS)) {
             pinByPass = mBundle.getBoolean(EmvPinConstraints.PINALLOWBYPASS);
-            Log.d("CHECKING_PIN_BYPASS", String.valueOf(pinByPass));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINOFFTRYCNT)) {
             pinTryCnt = mBundle.getInt(EmvPinConstraints.PINOFFTRYCNT);
-            Log.d("CHECKING_PIN_TRY_C_MA", String.valueOf(pinTryCnt));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINPUBEXP)) {
             pinExpData = mBundle.getByteArray(EmvPinConstraints.PINPUBEXP);
-            Log.d("CHECKING_PIN_EXP_D", Arrays.toString(pinExpData));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINPUBMODEL)) {
             pinModData = mBundle.getByteArray(EmvPinConstraints.PINPUBMODEL);
-            Log.d("CHECKING_PIN_MOD_D", Arrays.toString(pinModData));
         }
 
         if (mBundle.containsKey(EmvPinConstraints.PINCARDRND)) {
             pinIccRandomData = mBundle.getByteArray(EmvPinConstraints.PINCARDRND);
-            Log.d("CHECKING_PIN_ICC_R_D", Arrays.toString(pinIccRandomData));
         }
 
         switch (pinType) {
@@ -166,6 +154,7 @@ public class PasswordDialog {
         ConstraintLayout view = (ConstraintLayout) inflater.inflate(R.layout.layout_password, null);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvMessage = view.findViewById(R.id.tvMessage);
+        tvAmount = view.findViewById(R.id.amountTv);
         etPin = view.findViewById(R.id.etPin);
         btnConfirm = view.findViewById(R.id.btnConfirm);
         btnClear = view.findViewById(R.id.btnClear);
@@ -188,6 +177,7 @@ public class PasswordDialog {
 
         tvTitle.setText(title);
         tvMessage.setText(message);
+        tvAmount.setText("");
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         passwordDialog = dialog;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
