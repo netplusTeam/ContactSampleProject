@@ -118,7 +118,7 @@ class CardReaderService @JvmOverloads constructor(
 
         override fun onRequestInputPin(p0: Bundle?) {
             if (amount.isNotEmpty()) {
-                callPinPadDialog(activity, p0, amount) {}
+                callPinPadDialog(activity, p0, amount.toInt().formatCurrencyAmount()) {}
             } else {
                 callPinPadDialog(activity, p0, "") {}
             }

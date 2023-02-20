@@ -142,7 +142,7 @@ public class PasswordDialog {
             case OfflineEncryptPin:
                 //offline pin
                 title = "Enter PIN";
-                if (pinTryCnt > 1) {
+                if (pinTryCnt == 2) {
                     message = "Number of PIN try left: " + pinTryCnt + " ";
                 } else if (pinTryCnt == 1) {
                     message = "The Last try";
