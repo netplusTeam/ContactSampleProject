@@ -2,6 +2,7 @@ package com.netpluspay.netpossdk.utils
 
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
+import java.text.DecimalFormat
 import javax.crypto.*
 import javax.crypto.spec.SecretKeySpec
 import kotlin.experimental.and
@@ -95,7 +96,7 @@ object ExtensionFunctions {
         return result
     }
 
-    fun xorHex(a: String, b: String): String? {
+    fun xorHex(a: String, b: String): String {
         // TODO: Validation
         val chars = CharArray(a.length)
         for (i in chars.indices) {
@@ -115,5 +116,10 @@ object ExtensionFunctions {
             return c - 'a' + 10
         }
         throw IllegalArgumentException()
+    }
+
+    fun Number.formatCurrencyAmount(currencySymbol: String = "\u20A6"): String {
+        val format = DecimalFormat("#,###.00")
+        return "$currencySymbol ${format.format(this)}"
     }
 }

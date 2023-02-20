@@ -1,36 +1,38 @@
 # compiler: R8
 # compiler_version: 2.1.86
-# pg_map_id: 9488e4c
+# pg_map_id: ae80aab
 # common_typos_disable
 com.netpluspay.netpossdk.BuildConfig -> com.netpluspay.netpossdk.BuildConfig:
     1:1:void <init>():6:6 -> <init>
 com.netpluspay.netpossdk.NetPosSdk -> com.netpluspay.netpossdk.NetPosSdk:
-    1:1:void <init>():18:18 -> <init>
-    1:4:void initTerminalConfiguration():35:38 -> a
-    5:5:void initTerminalConfiguration():36:36 -> a
-    1:2:void clearAids():79:80 -> clearAids
-    1:2:void clearCapks():85:86 -> clearCapks
-    1:1:java.util.List getAids():69:69 -> getAids
-    1:1:java.util.List getCapks():74:74 -> getCapks
-    1:2:java.lang.String getClearKey(android.content.Context):121:122 -> getClearKey
-    1:1:java.lang.String getDeviceSerial():27:27 -> getDeviceSerial
-    2:5:java.lang.String getDeviceSerial():26:29 -> getDeviceSerial
-    1:1:com.pos.sdk.printer.POIPrinterManage getPrinterManager(android.content.Context):43:43 -> getPrinterManager
-    1:1:void init():22:22 -> init
-    1:84:void loadAids(java.util.List):61:144 -> loadAids
-    85:85:void loadAids(java.util.List):63:63 -> loadAids
-    1:56:void loadCapks(java.util.List):91:146 -> loadCapks
-    57:57:void loadCapks(java.util.List):93:93 -> loadCapks
-    1:4:void loadEmvParams(com.netpluspay.netpossdk.utils.TerminalParameters):47:50 -> loadEmvParams
-    1:1:void loadEmvParams$default(com.netpluspay.netpossdk.utils.TerminalParameters,int,java.lang.Object):46:46 -> loadEmvParams$default
-    1:2:void loadProvidedCapksAndAids():55:56 -> loadProvidedCapksAndAids
-    1:9:int writeDukptKey(int,java.lang.String,java.lang.String):127:135 -> writeDukptKey
-    10:10:int writeDukptKey(int,java.lang.String,java.lang.String):129:129 -> writeDukptKey
-    1:9:int writeTpkKey(int,java.lang.String,android.content.Context):99:99 -> writeTpkKey
-    18:18:int writeTpkKey(int,java.lang.String,android.content.Context):108:108 -> writeTpkKey
-    19:136:void saveInSharedPrefs(java.lang.String,android.content.Context):0:117 -> writeTpkKey
-    19:136:int writeTpkKey(int,java.lang.String,android.content.Context):108 -> writeTpkKey
-    137:139:int writeTpkKey(int,java.lang.String,android.content.Context):109:111 -> writeTpkKey
+    1:1:void <init>():23:23 -> <init>
+    1:4:void initTerminalConfiguration():99:102 -> a
+    5:5:void initTerminalConfiguration():100:100 -> a
+    1:2:void clearAids():143:144 -> clearAids
+    1:2:void clearCapks():149:150 -> clearCapks
+    1:1:java.util.List getAids():133:133 -> getAids
+    1:1:java.util.List getCapks():138:138 -> getCapks
+    1:2:java.lang.String getClearKey(android.content.Context):185:186 -> getClearKey
+    1:1:java.lang.String getDeviceSerial():91:91 -> getDeviceSerial
+    2:5:java.lang.String getDeviceSerial():90:93 -> getDeviceSerial
+    1:1:com.pos.sdk.printer.POIPrinterManage getPrinterManager(android.content.Context):107:107 -> getPrinterManager
+    1:1:void init():86:86 -> init
+    1:84:void loadAids(java.util.List):125:208 -> loadAids
+    85:85:void loadAids(java.util.List):127:127 -> loadAids
+    1:56:void loadCapks(java.util.List):155:210 -> loadCapks
+    57:57:void loadCapks(java.util.List):157:157 -> loadCapks
+    1:4:void loadEmvParams(com.netpluspay.netpossdk.utils.TerminalParameters):111:114 -> loadEmvParams
+    1:1:void loadEmvParams$default(com.netpluspay.netpossdk.utils.TerminalParameters,int,java.lang.Object):110:110 -> loadEmvParams$default
+    1:2:void loadProvidedCapksAndAids():119:120 -> loadProvidedCapksAndAids
+    1:10:void setGenyzApnConfiguration(android.app.Activity):27:36 -> setGenyzApnConfiguration
+    11:11:void setGenyzApnConfiguration(android.app.Activity):35:35 -> setGenyzApnConfiguration
+    1:9:int writeDukptKey(int,java.lang.String,java.lang.String):191:199 -> writeDukptKey
+    10:10:int writeDukptKey(int,java.lang.String,java.lang.String):193:193 -> writeDukptKey
+    1:9:int writeTpkKey(int,java.lang.String,android.content.Context):163:163 -> writeTpkKey
+    18:18:int writeTpkKey(int,java.lang.String,android.content.Context):172:172 -> writeTpkKey
+    19:200:void saveInSharedPrefs(java.lang.String,android.content.Context):0:181 -> writeTpkKey
+    19:200:int writeTpkKey(int,java.lang.String,android.content.Context):172 -> writeTpkKey
+    201:203:int writeTpkKey(int,java.lang.String,android.content.Context):173:175 -> writeTpkKey
 com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory -> com.netpluspay.netpossdk.core.AndroidTerminalCardReaderFactory:
     1:1:void <init>():3:3 -> <init>
 com.netpluspay.netpossdk.core.AndroidTerminalReceiptBuilderFactory -> com.netpluspay.netpossdk.core.AndroidTerminalReceiptBuilderFactory:
@@ -227,121 +229,130 @@ com.netpluspay.netpossdk.emv.CardReaderEvent$CardRead -> com.netpluspay.netpossd
     1:1:void <init>(com.netpluspay.netpossdk.emv.CardReadResult):5:5 -> <init>
     1:1:com.netpluspay.netpossdk.emv.CardReadResult getData():5:5 -> getData
 com.netpluspay.netpossdk.emv.CardReaderService -> com.netpluspay.netpossdk.emv.CardReaderService:
-    int cardType -> i
-    java.lang.String cardPinBlock -> l
+    java.lang.String amount -> i
+    int cardType -> j
+    java.lang.String cardPinBlock -> m
     int timeout -> b
+    android.os.Bundle reqData -> k
     int keyMode -> c
-    android.os.Bundle reqData -> j
     com.netpluspay.netpossdk.view.PasswordDialog passwordDialog -> h
     java.util.List modes -> a
     com.netpluspay.netpossdk.emv.data.TransactionData transactionData -> e
     io.reactivex.ObservableEmitter emitter -> f
-    com.pos.sdk.emvcore.POIEmvCoreManager emvCoreManager -> k
-    com.pos.sdk.emvcore.IPosEmvCoreListener$Stub emvCoreListener -> m
+    com.pos.sdk.emvcore.POIEmvCoreManager emvCoreManager -> l
+    com.pos.sdk.emvcore.IPosEmvCoreListener$Stub emvCoreListener -> n
     boolean isOnline -> g
     java.lang.String logTag -> d
-    1:2:void <init>(android.app.Activity,java.util.List,int,int,int,kotlin.jvm.internal.DefaultConstructorMarker):32:33 -> <init>
-    3:3:void <init>(android.app.Activity,java.util.List,int,int,int,kotlin.jvm.internal.DefaultConstructorMarker):31:31 -> <init>
-    4:4:void <init>(android.app.Activity,java.util.List,int,int,int,kotlin.jvm.internal.DefaultConstructorMarker):29:29 -> <init>
-    5:5:void <init>(android.app.Activity,java.util.List,int,int):37:37 -> <init>
-    6:23:void <init>(android.app.Activity,java.util.List,int,int):31:48 -> <init>
-    1:16:kotlin.Pair handleVisaContactlessImpl(android.app.Activity,boolean,android.os.Bundle,int):309:324 -> a
-    17:17:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):314:314 -> a
-    18:370:com.netpluspay.netpossdk.view.PasswordDialog instantiatePasswordDialog(android.app.Activity,boolean,android.os.Bundle,int,kotlin.jvm.functions.Function0):0:352 -> a
-    18:370:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):314 -> a
-    371:376:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):315:320 -> a
-    377:379:void handleVisaContactlessImpl$lambda-1$lambda-0(kotlin.jvm.internal.Ref$ObjectRef,com.netpluspay.netpossdk.view.PasswordDialog,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch,android.content.DialogInterface):316:318 -> a
-    380:380:void callPinPadDialog(android.app.Activity,android.os.Bundle,kotlin.jvm.functions.Function0):395:395 -> a
-    381:382:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle):396:397 -> a
-    383:384:com.netpluspay.netpossdk.view.PasswordDialog instantiatePasswordDialog(android.app.Activity,boolean,android.os.Bundle,int,kotlin.jvm.functions.Function0):351:352 -> a
-    383:384:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle):397 -> a
-    385:386:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle):397:398 -> a
-    387:391:void initiateICCCardPayment$lambda-9(com.netpluspay.netpossdk.emv.CardReaderService,io.reactivex.ObservableEmitter):430:434 -> a
-    392:392:void initiateICCCardPayment$lambda-9(com.netpluspay.netpossdk.emv.CardReaderService,io.reactivex.ObservableEmitter):431:431 -> a
-    393:393:void initiateICCCardPayment$lambda-9$lambda-8(com.netpluspay.netpossdk.emv.CardReaderService):432:432 -> a
-    1:1:void access$callPinPadDialog(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle,kotlin.jvm.functions.Function0):29:29 -> access$callPinPadDialog
-    1:1:int access$getCardType$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$getCardType$p
-    1:1:io.reactivex.ObservableEmitter access$getEmitter$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$getEmitter$p
-    1:1:com.pos.sdk.emvcore.POIEmvCoreManager access$getEmvCoreManager$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$getEmvCoreManager$p
-    1:1:int access$getKeyMode$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$getKeyMode$p
-    1:1:java.lang.String access$getLogTag$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$getLogTag$p
-    1:1:com.netpluspay.netpossdk.emv.data.TransactionData access$getTransactionData$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$getTransactionData$p
-    1:5:void handleOnNextEmissionForCardResult(int):328:332 -> access$handleOnNextEmissionForCardResult
-    1:5:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):29 -> access$handleOnNextEmissionForCardResult
-    6:14:void handleOnNextEmissionForCardResult(int):330:338 -> access$handleOnNextEmissionForCardResult
-    6:14:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):29 -> access$handleOnNextEmissionForCardResult
-    15:15:void handleOnNextEmissionForCardResult(int):329:329 -> access$handleOnNextEmissionForCardResult
-    15:15:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):29 -> access$handleOnNextEmissionForCardResult
-    16:16:void handleOnNextEmissionForCardResult(int):328:328 -> access$handleOnNextEmissionForCardResult
-    16:16:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):29 -> access$handleOnNextEmissionForCardResult
-    1:1:kotlin.Pair access$handleVisaContactlessImpl(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int):29:29 -> access$handleVisaContactlessImpl
-    1:1:boolean access$isOnline$p(com.netpluspay.netpossdk.emv.CardReaderService):29:29 -> access$isOnline$p
-    1:480:android.os.Bundle modifyBundleForVisaContactless(android.os.Bundle,java.lang.String):0:479 -> access$modifyBundleForVisaContactless
-    1:480:android.os.Bundle access$modifyBundleForVisaContactless(com.netpluspay.netpossdk.emv.CardReaderService,android.os.Bundle,java.lang.String):29 -> access$modifyBundleForVisaContactless
-    1:1:void pinPadErrorCallBack(int):391:391 -> access$pinPadErrorCallBack
-    1:1:void access$pinPadErrorCallBack(com.netpluspay.netpossdk.emv.CardReaderService,int):29 -> access$pinPadErrorCallBack
-    1:1:void access$setCardPinBlock$p(com.netpluspay.netpossdk.emv.CardReaderService,java.lang.String):29:29 -> access$setCardPinBlock$p
-    1:1:void access$setCardType$p(com.netpluspay.netpossdk.emv.CardReaderService,int):29:29 -> access$setCardType$p
-    1:1:void access$setOnline$p(com.netpluspay.netpossdk.emv.CardReaderService,boolean):29:29 -> access$setOnline$p
-    1:1:void access$setUpdate$p(com.netpluspay.netpossdk.emv.CardReaderService,boolean):29:29 -> access$setUpdate$p
-    1:1:java.lang.Object initiateICCCardPayment(long,long):29:29 -> initiateICCCardPayment
-    2:2:io.reactivex.Observable initiateICCCardPayment():402:402 -> initiateICCCardPayment
-    3:78:io.reactivex.Observable initiateICCCardPayment(long,long):408:483 -> initiateICCCardPayment
-    79:79:io.reactivex.Observable initiateICCCardPayment(long,long):421:421 -> initiateICCCardPayment
-    80:101:io.reactivex.Observable initiateICCCardPayment(long,long):408:429 -> initiateICCCardPayment
-    102:103:io.reactivex.Observable initiateICCCardPayment(long,long):415:416 -> initiateICCCardPayment
-    1:1:void readCard():465:465 -> readCard
-    1:11:void scanForCard():439:439 -> scanForCard
-    1:1:void showPinPad():461:461 -> showPinPad
-    1:3:void transEnd(int,java.lang.String):454:456 -> transEnd
-    4:4:void transEnd(int,java.lang.String):455:455 -> transEnd
-    1:1:void transEnd$default(com.netpluspay.netpossdk.emv.CardReaderService,int,java.lang.String,int,java.lang.Object):453:453 -> transEnd$default
-    1:1:void updateICCardData(int):469:469 -> updateICCardData
+    1:2:void <init>(android.app.Activity,java.util.List,int,int,int,kotlin.jvm.internal.DefaultConstructorMarker):33:34 -> <init>
+    3:3:void <init>(android.app.Activity,java.util.List,int,int,int,kotlin.jvm.internal.DefaultConstructorMarker):32:32 -> <init>
+    4:4:void <init>(android.app.Activity,java.util.List,int,int,int,kotlin.jvm.internal.DefaultConstructorMarker):30:30 -> <init>
+    5:5:void <init>(android.app.Activity,java.util.List,int,int):38:38 -> <init>
+    6:24:void <init>(android.app.Activity,java.util.List,int,int):32:50 -> <init>
+    1:17:kotlin.Pair handleVisaContactlessImpl(android.app.Activity,boolean,android.os.Bundle,int,java.lang.String):317:333 -> a
+    18:18:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):323:323 -> a
+    19:384:com.netpluspay.netpossdk.view.PasswordDialog instantiatePasswordDialog(android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.functions.Function0):0:365 -> a
+    19:384:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):323 -> a
+    385:393:com.netpluspay.netpossdk.view.PasswordDialog instantiatePasswordDialog(android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.functions.Function0):361:369 -> a
+    385:393:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):323 -> a
+    394:399:void handleVisaContactlessImpl$lambda-1(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch):324:329 -> a
+    400:402:void handleVisaContactlessImpl$lambda-1$lambda-0(kotlin.jvm.internal.Ref$ObjectRef,com.netpluspay.netpossdk.view.PasswordDialog,kotlin.jvm.internal.Ref$IntRef,java.util.concurrent.CountDownLatch,android.content.DialogInterface):325:327 -> a
+    403:403:void callPinPadDialog(android.app.Activity,android.os.Bundle,java.lang.String,kotlin.jvm.functions.Function0):417:417 -> a
+    404:406:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle,java.lang.String):418:420 -> a
+    407:412:com.netpluspay.netpossdk.view.PasswordDialog instantiatePasswordDialog(android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.functions.Function0):361:361 -> a
+    407:412:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle,java.lang.String):420 -> a
+    420:420:com.netpluspay.netpossdk.view.PasswordDialog instantiatePasswordDialog(android.app.Activity,boolean,android.os.Bundle,int,java.lang.String,kotlin.jvm.functions.Function0):369:369 -> a
+    420:420:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle,java.lang.String):420 -> a
+    421:423:void callPinPadDialog$lambda-4(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle,java.lang.String):419:421 -> a
+    424:428:void initiateICCCardPayment$lambda-9(com.netpluspay.netpossdk.emv.CardReaderService,io.reactivex.ObservableEmitter):453:457 -> a
+    429:429:void initiateICCCardPayment$lambda-9(com.netpluspay.netpossdk.emv.CardReaderService,io.reactivex.ObservableEmitter):454:454 -> a
+    430:430:void initiateICCCardPayment$lambda-9$lambda-8(com.netpluspay.netpossdk.emv.CardReaderService):455:455 -> a
+    1:1:void access$callPinPadDialog(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,android.os.Bundle,java.lang.String,kotlin.jvm.functions.Function0):30:30 -> access$callPinPadDialog
+    1:1:java.lang.String access$getAmount$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getAmount$p
+    1:1:int access$getCardType$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getCardType$p
+    1:1:io.reactivex.ObservableEmitter access$getEmitter$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getEmitter$p
+    1:1:com.pos.sdk.emvcore.POIEmvCoreManager access$getEmvCoreManager$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getEmvCoreManager$p
+    1:1:int access$getKeyMode$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getKeyMode$p
+    1:1:java.lang.String access$getLogTag$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getLogTag$p
+    1:1:com.netpluspay.netpossdk.emv.data.TransactionData access$getTransactionData$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$getTransactionData$p
+    1:5:void handleOnNextEmissionForCardResult(int):337:341 -> access$handleOnNextEmissionForCardResult
+    1:5:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):30 -> access$handleOnNextEmissionForCardResult
+    6:14:void handleOnNextEmissionForCardResult(int):339:347 -> access$handleOnNextEmissionForCardResult
+    6:14:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):30 -> access$handleOnNextEmissionForCardResult
+    15:15:void handleOnNextEmissionForCardResult(int):338:338 -> access$handleOnNextEmissionForCardResult
+    15:15:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):30 -> access$handleOnNextEmissionForCardResult
+    16:16:void handleOnNextEmissionForCardResult(int):337:337 -> access$handleOnNextEmissionForCardResult
+    16:16:void access$handleOnNextEmissionForCardResult(com.netpluspay.netpossdk.emv.CardReaderService,int):30 -> access$handleOnNextEmissionForCardResult
+    1:1:kotlin.Pair access$handleVisaContactlessImpl(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity,boolean,android.os.Bundle,int,java.lang.String):30:30 -> access$handleVisaContactlessImpl
+    1:1:boolean access$isOnline$p(com.netpluspay.netpossdk.emv.CardReaderService):30:30 -> access$isOnline$p
+    1:503:android.os.Bundle modifyBundleForVisaContactless(android.os.Bundle,java.lang.String):0:502 -> access$modifyBundleForVisaContactless
+    1:503:android.os.Bundle access$modifyBundleForVisaContactless(com.netpluspay.netpossdk.emv.CardReaderService,android.os.Bundle,java.lang.String):30 -> access$modifyBundleForVisaContactless
+    1:1:void pinPadErrorCallBack(int):408:408 -> access$pinPadErrorCallBack
+    1:1:void access$pinPadErrorCallBack(com.netpluspay.netpossdk.emv.CardReaderService,int):30 -> access$pinPadErrorCallBack
+    1:1:void access$setCardPinBlock$p(com.netpluspay.netpossdk.emv.CardReaderService,java.lang.String):30:30 -> access$setCardPinBlock$p
+    1:1:void access$setCardType$p(com.netpluspay.netpossdk.emv.CardReaderService,int):30:30 -> access$setCardType$p
+    1:1:void access$setOnline$p(com.netpluspay.netpossdk.emv.CardReaderService,boolean):30:30 -> access$setOnline$p
+    1:1:void access$setUpdate$p(com.netpluspay.netpossdk.emv.CardReaderService,boolean):30:30 -> access$setUpdate$p
+    1:1:java.lang.Object initiateICCCardPayment(long,long):30:30 -> initiateICCCardPayment
+    2:2:io.reactivex.Observable initiateICCCardPayment():425:425 -> initiateICCCardPayment
+    3:78:io.reactivex.Observable initiateICCCardPayment(long,long):431:506 -> initiateICCCardPayment
+    79:79:io.reactivex.Observable initiateICCCardPayment(long,long):444:444 -> initiateICCCardPayment
+    80:100:io.reactivex.Observable initiateICCCardPayment(long,long):432:452 -> initiateICCCardPayment
+    101:101:io.reactivex.Observable initiateICCCardPayment(long,long):439:439 -> initiateICCCardPayment
+    1:1:void readCard():488:488 -> readCard
+    1:11:void scanForCard():462:462 -> scanForCard
+    1:1:void showPinPad():484:484 -> showPinPad
+    1:3:void transEnd(int,java.lang.String):477:479 -> transEnd
+    4:4:void transEnd(int,java.lang.String):478:478 -> transEnd
+    1:1:void transEnd$default(com.netpluspay.netpossdk.emv.CardReaderService,int,java.lang.String,int,java.lang.Object):476:476 -> transEnd$default
+    1:1:void updateICCardData(int):492:492 -> updateICCardData
 com.netpluspay.netpossdk.emv.CardReaderService$callPinPadDialog$1$1 -> com.netpluspay.netpossdk.emv.CardReaderService$a:
     com.netpluspay.netpossdk.emv.CardReaderService$callPinPadDialog$1$1 INSTANCE -> a
-    1:1:java.lang.Object invoke():397:397 -> invoke
+    1:1:java.lang.Object invoke():420:420 -> invoke
 com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1 -> com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1:
     com.netpluspay.netpossdk.emv.CardReaderService this$0 -> a
     android.app.Activity $activity -> b
-    1:1:void <init>(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity):48:48 -> <init>
-    1:1:void onSelectApplication$lambda-0(com.netpluspay.netpossdk.emv.CardReaderService,int):107:107 -> a
-    1:1:void onConfirmCardInfo(int,java.lang.String):112:112 -> onConfirmCardInfo
-    1:2:void onEmvProcess(int):80:81 -> onEmvProcess
-    3:22:void onEmvProcess(int):75:94 -> onEmvProcess
-    23:23:void onEmvProcess(int):90:90 -> onEmvProcess
-    24:35:void onEmvProcess(int):51:62 -> onEmvProcess
-    36:36:void onEmvProcess(int):58:58 -> onEmvProcess
-    37:53:void onEmvProcess(int):55:71 -> onEmvProcess
-    54:54:void onEmvProcess(int):66:66 -> onEmvProcess
-    1:1:void onRequestInputPin(android.os.Bundle):122:122 -> onRequestInputPin
-    1:10:void onRequestOnlineProcess(android.os.Bundle):126:135 -> onRequestOnlineProcess
-    11:45:void onRequestOnlineProcess(android.os.Bundle):133:167 -> onRequestOnlineProcess
-    46:52:void onRequestOnlineProcess(android.os.Bundle):146:152 -> onRequestOnlineProcess
-    53:77:void onRequestOnlineProcess(android.os.Bundle):150:174 -> onRequestOnlineProcess
-    78:82:void onRequestOnlineProcess(android.os.Bundle):172:176 -> onRequestOnlineProcess
-    1:1:void onSelectApplication(java.util.List,boolean):484:484 -> onSelectApplication
-    2:7:void onSelectApplication(java.util.List,boolean):101:106 -> onSelectApplication
-    8:389:void onSelectApplication(java.util.List,boolean):103:484 -> onSelectApplication
-    1:23:void onTransactionResult(int,android.os.Bundle):180:202 -> onTransactionResult
-    24:53:void onTransactionResult(int,android.os.Bundle):200:229 -> onTransactionResult
-    54:97:void onTransactionResult(int,android.os.Bundle):228:271 -> onTransactionResult
-    98:117:void onTransactionResult(int,android.os.Bundle):267:286 -> onTransactionResult
-    118:131:void onTransactionResult(int,android.os.Bundle):285:298 -> onTransactionResult
-    132:132:void onTransactionResult(int,android.os.Bundle):297:297 -> onTransactionResult
-    133:133:void onTransactionResult(int,android.os.Bundle):257:257 -> onTransactionResult
+    1:1:void <init>(com.netpluspay.netpossdk.emv.CardReaderService,android.app.Activity):50:50 -> <init>
+    1:1:void onSelectApplication$lambda-0(com.netpluspay.netpossdk.emv.CardReaderService,int):105:105 -> a
+    1:1:void onConfirmCardInfo(int,java.lang.String):110:110 -> onConfirmCardInfo
+    1:1:void onEmvProcess(int):80:80 -> onEmvProcess
+    2:18:void onEmvProcess(int):76:92 -> onEmvProcess
+    19:19:void onEmvProcess(int):88:88 -> onEmvProcess
+    20:31:void onEmvProcess(int):53:64 -> onEmvProcess
+    32:32:void onEmvProcess(int):60:60 -> onEmvProcess
+    33:48:void onEmvProcess(int):57:72 -> onEmvProcess
+    49:49:void onEmvProcess(int):68:68 -> onEmvProcess
+    1:4:void onRequestInputPin(android.os.Bundle):120:123 -> onRequestInputPin
+    1:10:void onRequestOnlineProcess(android.os.Bundle):128:137 -> onRequestOnlineProcess
+    11:45:void onRequestOnlineProcess(android.os.Bundle):135:169 -> onRequestOnlineProcess
+    46:52:void onRequestOnlineProcess(android.os.Bundle):148:154 -> onRequestOnlineProcess
+    53:77:void onRequestOnlineProcess(android.os.Bundle):152:176 -> onRequestOnlineProcess
+    78:82:void onRequestOnlineProcess(android.os.Bundle):174:178 -> onRequestOnlineProcess
+    1:1:void onSelectApplication(java.util.List,boolean):507:507 -> onSelectApplication
+    2:7:void onSelectApplication(java.util.List,boolean):99:104 -> onSelectApplication
+    8:414:void onSelectApplication(java.util.List,boolean):101:507 -> onSelectApplication
+    1:23:void onTransactionResult(int,android.os.Bundle):182:204 -> onTransactionResult
+    24:53:void onTransactionResult(int,android.os.Bundle):202:231 -> onTransactionResult
+    54:102:void onTransactionResult(int,android.os.Bundle):230:278 -> onTransactionResult
+    103:122:void onTransactionResult(int,android.os.Bundle):274:293 -> onTransactionResult
+    123:136:void onTransactionResult(int,android.os.Bundle):292:305 -> onTransactionResult
+    137:137:void onTransactionResult(int,android.os.Bundle):304:304 -> onTransactionResult
+    138:138:void onTransactionResult(int,android.os.Bundle):259:259 -> onTransactionResult
 com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1$onRequestInputPin$1 -> com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1$a:
     com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1$onRequestInputPin$1 INSTANCE -> a
-    1:1:java.lang.Object invoke():122:122 -> invoke
+    1:1:java.lang.Object invoke():121:121 -> invoke
+com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1$onRequestInputPin$2 -> com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1$b:
+    com.netpluspay.netpossdk.emv.CardReaderService$emvCoreListener$1$onRequestInputPin$2 INSTANCE -> a
+    1:1:java.lang.Object invoke():123:123 -> invoke
 com.netpluspay.netpossdk.emv.CardReaderService$handleVisaContactlessImpl$1$pinPadDialog$1 -> com.netpluspay.netpossdk.emv.CardReaderService$b:
     com.netpluspay.netpossdk.emv.CardReaderService$handleVisaContactlessImpl$1$pinPadDialog$1 INSTANCE -> a
-    1:1:java.lang.Object invoke():314:314 -> invoke
+    1:1:java.lang.Object invoke():323:323 -> invoke
 com.netpluspay.netpossdk.emv.CardReaderService$instantiatePasswordDialog$1$1 -> com.netpluspay.netpossdk.emv.CardReaderService$instantiatePasswordDialog$1$1:
     com.netpluspay.netpossdk.emv.CardReaderService this$0 -> a
     kotlin.jvm.functions.Function0 $callback -> b
-    1:1:void <init>(com.netpluspay.netpossdk.emv.CardReaderService,kotlin.jvm.functions.Function0):352:352 -> <init>
-    1:4:void onConfirm(int,byte[],byte[]):358:361 -> onConfirm
-    5:9:void onConfirm(int,byte[],byte[]):360:364 -> onConfirm
-    1:1:void onError(int,int):368:368 -> onError
+    1:1:void <init>(com.netpluspay.netpossdk.emv.CardReaderService,kotlin.jvm.functions.Function0):369:369 -> <init>
+    1:4:void onConfirm(int,byte[],byte[]):375:378 -> onConfirm
+    5:9:void onConfirm(int,byte[],byte[]):377:381 -> onConfirm
+    1:1:void onError(int,int):385:385 -> onError
 com.netpluspay.netpossdk.emv.constant.AppConstants -> com.netpluspay.netpossdk.emv.constant.AppConstants:
     1:1:void <init>():5:5 -> <init>
 com.netpluspay.netpossdk.emv.constant.EmvCardScheme -> com.netpluspay.netpossdk.emv.constant.EmvCardScheme:
@@ -685,8 +696,8 @@ com.netpluspay.netpossdk.printer.ReceiptBuilder -> com.netpluspay.netpossdk.prin
     2:2:void <init>(com.pos.sdk.printer.POIPrinterManage):15:15 -> <init>
     1:8:void print$lambda-7(com.netpluspay.netpossdk.printer.ReceiptBuilder,io.reactivex.SingleEmitter):105:112 -> a
     9:10:void print$lambda-7$lambda-6(kotlin.jvm.internal.Ref$BooleanRef,io.reactivex.SingleEmitter):108:109 -> a
-    1:7:void appendImageCenter(android.graphics.Bitmap):129:135 -> appendImageCenter
-    1:1:void appendLogo(android.graphics.Bitmap):139:139 -> appendLogo
+    1:5:void appendImageCenter(android.graphics.Bitmap):129:133 -> appendImageCenter
+    1:1:void appendLogo(android.graphics.Bitmap):137:137 -> appendLogo
     1:10:void appendTextEntity(java.lang.String):21:30 -> appendTextEntity
     1:10:void appendTextEntityBold(java.lang.String):47:56 -> appendTextEntityBold
     1:10:void appendTextEntityCenter(java.lang.String):86:95 -> appendTextEntityCenter
@@ -761,22 +772,24 @@ com.netpluspay.netpossdk.utils.DeviceConfig -> com.netpluspay.netpossdk.utils.De
     1:1:void <init>():3:3 -> <init>
     1:7:void InitDevice(int):22:28 -> InitDevice
 com.netpluspay.netpossdk.utils.ExtensionFunctions -> com.netpluspay.netpossdk.utils.ExtensionFunctions:
-    1:1:void <init>():9:9 -> <init>
-    1:5:java.lang.String Hex2String(byte[]):78:82 -> Hex2String
-    1:4:byte[] String2Hex(java.lang.String):89:92 -> String2Hex
-    1:1:int fromHex(char):117:117 -> a
-    1:1:byte[] encrypt(byte[],byte[]):47:47 -> encrypt
-    2:23:byte[] getKey(byte[]):16:37 -> encrypt
-    2:23:byte[] encrypt(byte[],byte[]):47 -> encrypt
-    24:28:byte[] encrypt(byte[],byte[]):47:51 -> encrypt
-    29:32:java.lang.String encrypt(java.lang.String,java.lang.String):66:69 -> encrypt
-    1:3:java.lang.String xorHex(java.lang.String,java.lang.String):100:102 -> xorHex
-    4:4:char toHex(int):12:12 -> xorHex
-    4:4:java.lang.String xorHex(java.lang.String,java.lang.String):102 -> xorHex
-    5:5:java.lang.String xorHex(java.lang.String,java.lang.String):102:102 -> xorHex
-    6:6:char toHex(int):11:11 -> xorHex
-    6:6:java.lang.String xorHex(java.lang.String,java.lang.String):102 -> xorHex
-    7:7:java.lang.String xorHex(java.lang.String,java.lang.String):104:104 -> xorHex
+    1:1:void <init>():10:10 -> <init>
+    1:5:java.lang.String Hex2String(byte[]):79:83 -> Hex2String
+    1:4:byte[] String2Hex(java.lang.String):90:93 -> String2Hex
+    1:1:int fromHex(char):118:118 -> a
+    1:1:byte[] encrypt(byte[],byte[]):48:48 -> encrypt
+    2:23:byte[] getKey(byte[]):17:38 -> encrypt
+    2:23:byte[] encrypt(byte[],byte[]):48 -> encrypt
+    24:28:byte[] encrypt(byte[],byte[]):48:52 -> encrypt
+    29:32:java.lang.String encrypt(java.lang.String,java.lang.String):67:70 -> encrypt
+    1:2:java.lang.String formatCurrencyAmount(java.lang.Number,java.lang.String):122:123 -> formatCurrencyAmount
+    1:1:java.lang.String formatCurrencyAmount$default(com.netpluspay.netpossdk.utils.ExtensionFunctions,java.lang.Number,java.lang.String,int,java.lang.Object):121:121 -> formatCurrencyAmount$default
+    1:3:java.lang.String xorHex(java.lang.String,java.lang.String):101:103 -> xorHex
+    4:4:char toHex(int):13:13 -> xorHex
+    4:4:java.lang.String xorHex(java.lang.String,java.lang.String):103 -> xorHex
+    5:5:java.lang.String xorHex(java.lang.String,java.lang.String):103:103 -> xorHex
+    6:6:char toHex(int):12:12 -> xorHex
+    6:6:java.lang.String xorHex(java.lang.String,java.lang.String):103 -> xorHex
+    7:7:java.lang.String xorHex(java.lang.String,java.lang.String):105:105 -> xorHex
 com.netpluspay.netpossdk.utils.GlobalData -> com.netpluspay.netpossdk.utils.GlobalData:
     1:1:void <init>():7:7 -> <init>
     1:1:java.lang.String getKey():71:71 -> getKey
@@ -1095,40 +1108,6 @@ com.netpluspay.netpossdk.utils.tlv.HexUtil -> com.netpluspay.netpossdk.utils.tlv
     1:1:java.lang.String toHexString(byte[]):17:17 -> toHexString
     2:2:java.lang.String toHexString(byte[],int):25:25 -> toHexString
     3:11:java.lang.String toHexString(byte[],int,int):63:71 -> toHexString
-com.netpluspay.netpossdk.view.CustomPasswordDialog -> com.netpluspay.netpossdk.view.CustomPasswordDialog:
-    android.widget.EditText etPin -> f
-    android.widget.TextView btn5 -> o
-    com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener pinListener -> t
-    android.widget.TextView btn4 -> n
-    android.widget.TextView btn7 -> q
-    android.widget.TextView btn6 -> p
-    android.widget.TextView btn9 -> s
-    android.widget.TextView btn8 -> r
-    boolean $assertionsDisabled -> u
-    int keyMode -> b
-    int tpkIndex -> a
-    android.widget.ImageView btnClear -> h
-    android.widget.Button btnConfirm -> g
-    android.widget.TextView tvMessage -> e
-    android.widget.TextView tvTitle -> d
-    android.widget.TextView btnEsc -> i
-    java.lang.String title -> c
-    android.widget.TextView btn1 -> k
-    android.widget.TextView btn0 -> j
-    android.widget.TextView btn3 -> m
-    android.widget.TextView btn2 -> l
-    1:1:void <clinit>():31:31 -> <clinit>
-    1:1:void <init>(android.app.Activity,java.lang.String,com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener):68:68 -> <init>
-    2:123:void <init>(android.app.Activity,java.lang.String,com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener):32:153 -> <init>
-    1:5:void lambda$new$0(java.lang.StringBuilder,android.view.View):113:117 -> a
-    6:7:void lambda$new$1(com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener,android.view.View):121:122 -> a
-    8:12:void lambda$new$3(android.app.Activity,java.lang.String,com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener,android.view.View):131:135 -> a
-    13:22:java.lang.String encodePinBlock(java.lang.String,java.lang.String,android.content.Context):157:166 -> a
-    13:22:void lambda$new$3(android.app.Activity,java.lang.String,com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener,android.view.View):135 -> a
-    23:25:void lambda$new$3(android.app.Activity,java.lang.String,com.netpluspay.netpossdk.view.CustomPasswordDialog$Listener,android.view.View):135:137 -> a
-    1:3:void lambda$new$2(java.lang.StringBuilder,android.view.View):125:127 -> b
-    1:1:void showDialog():171:171 -> showDialog
-    1:7:void shuffleArray(int[]):195:201 -> shuffleArray
 com.netpluspay.netpossdk.view.HandWriteView -> com.netpluspay.netpossdk.view.HandWriteView:
     android.content.Context context -> a
     float clickY -> k
@@ -1232,106 +1211,103 @@ com.netpluspay.netpossdk.view.MaterialDialog$9 -> com.netpluspay.netpossdk.view.
     1:1:void <init>(com.netpluspay.netpossdk.view.MaterialDialog):131:131 -> <init>
     1:1:void onClick(android.content.DialogInterface,int):134:134 -> onClick
 com.netpluspay.netpossdk.view.PasswordDialog -> com.netpluspay.netpossdk.view.PasswordDialog:
-    java.lang.String pinCard -> f
-    com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener pinEventListener -> q
+    com.pos.sdk.security.POIHsmManage hsmManage -> o
     androidx.constraintlayout.widget.Group groupKeyboard -> I
-    byte[] pinModData -> k
-    int pinTryCnt -> h
-    android.widget.TextView tvMessage -> t
-    java.lang.String title -> n
+    byte[] pinExpData -> k
+    android.widget.TextView tvTitle -> r
+    int pinType -> h
+    com.netpluspay.netpossdk.view.PasswordDialog$Listener pinListener -> l
+    android.widget.TextView tvAmount -> t
+    java.lang.String message -> n
+    int keyMode -> d
     android.widget.TextView btnEsc -> x
-    int tpkIndex -> b
+    int icSlot -> b
     android.widget.TextView btn1 -> z
     android.widget.EditText etPin -> u
     android.widget.TextView btn2 -> A
     android.widget.TextView btn4 -> C
-    android.os.Handler handler -> a
     android.widget.TextView btn6 -> E
     android.widget.TextView btn8 -> G
-    byte[] pinIccRandomData -> j
-    boolean isEncryptCard -> d
+    boolean pinByPass -> f
+    byte[] pinModData -> j
+    android.app.Dialog dialog -> q
+    java.lang.String pinCard -> e
     android.widget.Button btnConfirm -> v
     android.widget.ImageView btnClear -> w
-    byte[] pinExpData -> l
-    android.widget.TextView tvTitle -> s
-    com.pos.sdk.security.POIHsmManage hsmManage -> p
-    com.netpluspay.netpossdk.view.PasswordDialog$Listener pinListener -> m
-    int pinType -> i
-    java.lang.String message -> o
+    com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener pinEventListener -> p
+    android.widget.TextView tvMessage -> s
+    java.lang.String title -> m
+    int pinTryCnt -> g
     android.widget.TextView btn0 -> y
-    int keyMode -> e
-    int icSlot -> c
+    int tpkIndex -> a
     android.widget.TextView btn3 -> B
     android.widget.TextView btn5 -> D
     android.widget.TextView btn7 -> F
-    boolean pinByPass -> g
+    byte[] pinIccRandomData -> i
     android.widget.TextView btn9 -> H
-    android.app.Dialog dialog -> r
-    1:1:void <init>(android.app.Activity,boolean,android.os.Bundle,int,int):81:81 -> <init>
-    2:58:void <init>(android.app.Activity,boolean,android.os.Bundle,int,int):45:101 -> <init>
-    59:167:void <init>(android.app.Activity,boolean,android.os.Bundle,int,int):95:203 -> <init>
-    1:1:byte[] intToBytes(int):523:523 -> a
-    2:5:void endPwd():530:533 -> a
-    2:5:void access$300(com.netpluspay.netpossdk.view.PasswordDialog):40 -> a
-    6:23:void onPinConfirm(int,byte[],byte[]):537:554 -> a
-    6:23:void access$100(com.netpluspay.netpossdk.view.PasswordDialog,int,byte[],byte[]):40 -> a
-    24:33:void onPinError(int,int):558:567 -> a
-    24:33:void access$200(com.netpluspay.netpossdk.view.PasswordDialog,int,int):40 -> a
-    1:1:void setKeyMode(int):575:575 -> setKeyMode
-    1:1:void setPinListener(com.netpluspay.netpossdk.view.PasswordDialog$Listener):571:571 -> setPinListener
-    1:9:void showDialog():208:216 -> showDialog
-    10:22:int PedVerifyCipherPin():247:259 -> showDialog
-    10:22:void showDialog():224 -> showDialog
-    23:54:int PedOnlinePin():263:294 -> showDialog
-    23:54:void showDialog():221 -> showDialog
-    55:56:int PedVerifyPlainPin():242:243 -> showDialog
-    55:56:void showDialog():218 -> showDialog
-    57:59:void showDialog():235:237 -> showDialog
+    boolean isEncryptCard -> c
+    1:1:void <init>(android.app.Activity,boolean,android.os.Bundle,int,int,java.lang.String):79:79 -> <init>
+    2:60:void <init>(android.app.Activity,boolean,android.os.Bundle,int,int,java.lang.String):42:100 -> <init>
+    61:161:void <init>(android.app.Activity,boolean,android.os.Bundle,int,int,java.lang.String):94:194 -> <init>
+    1:1:byte[] intToBytes(int):522:522 -> a
+    2:3:void endPwd():529:530 -> a
+    2:3:void access$300(com.netpluspay.netpossdk.view.PasswordDialog):37 -> a
+    4:23:void onPinConfirm(int,byte[],byte[]):534:553 -> a
+    4:23:void access$100(com.netpluspay.netpossdk.view.PasswordDialog,int,byte[],byte[]):37 -> a
+    24:33:void onPinError(int,int):557:566 -> a
+    24:33:void access$200(com.netpluspay.netpossdk.view.PasswordDialog,int,int):37 -> a
+    1:1:void setKeyMode(int):574:574 -> setKeyMode
+    1:1:void setPinListener(com.netpluspay.netpossdk.view.PasswordDialog$Listener):570:570 -> setPinListener
+    1:1:void showDialog():207:207 -> showDialog
+    2:14:int PedVerifyCipherPin():238:250 -> showDialog
+    2:14:void showDialog():215 -> showDialog
+    15:45:int PedOnlinePin():254:284 -> showDialog
+    15:45:void showDialog():212 -> showDialog
+    46:47:int PedVerifyPlainPin():233:234 -> showDialog
+    46:47:void showDialog():209 -> showDialog
 com.netpluspay.netpossdk.view.PasswordDialog$1 -> com.netpluspay.netpossdk.view.PasswordDialog$a:
-    1:1:void <init>(com.netpluspay.netpossdk.view.PasswordDialog,android.os.Looper):208:208 -> <init>
-    1:1:void handleMessage(android.os.Message):211:211 -> handleMessage
 com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener -> com.netpluspay.netpossdk.view.PasswordDialog$b:
     com.netpluspay.netpossdk.view.PasswordDialog this$0 -> b
     java.lang.String info -> a
-    1:4:void <init>(com.netpluspay.netpossdk.view.PasswordDialog):297:300 -> <init>
-    5:5:void <init>(com.netpluspay.netpossdk.view.PasswordDialog,com.netpluspay.netpossdk.view.PasswordDialog$1):297:297 -> <init>
-    1:21:void onError(com.pos.sdk.security.POIHsmManage,int,int):392:412 -> onError
-    22:22:void onError(com.pos.sdk.security.POIHsmManage,int,int):399:399 -> onError
-    23:23:android.widget.TextView com.netpluspay.netpossdk.view.PasswordDialog.access$700(com.netpluspay.netpossdk.view.PasswordDialog):40:40 -> onError
-    23:23:void onError(com.pos.sdk.security.POIHsmManage,int,int):399 -> onError
-    24:24:void onError(com.pos.sdk.security.POIHsmManage,int,int):399:399 -> onError
-    25:25:void onError(com.pos.sdk.security.POIHsmManage,int,int):395:395 -> onError
-    26:26:android.widget.TextView com.netpluspay.netpossdk.view.PasswordDialog.access$700(com.netpluspay.netpossdk.view.PasswordDialog):40:40 -> onError
-    26:26:void onError(com.pos.sdk.security.POIHsmManage,int,int):395 -> onError
-    27:48:void onError(com.pos.sdk.security.POIHsmManage,int,int):395:416 -> onError
-    49:49:void onError(com.pos.sdk.security.POIHsmManage,int,int):403:403 -> onError
-    50:50:boolean com.netpluspay.netpossdk.view.PasswordDialog.access$800(com.netpluspay.netpossdk.view.PasswordDialog):40:40 -> onError
-    50:50:void onError(com.pos.sdk.security.POIHsmManage,int,int):403 -> onError
-    51:55:void onError(com.pos.sdk.security.POIHsmManage,int,int):404:408 -> onError
-    1:1:void onHwSelfCheckRet(com.pos.sdk.security.POIHsmManage,int,int):432:432 -> onHwSelfCheckRet
-    1:1:void onHwSensorTriggered(com.pos.sdk.security.POIHsmManage,int,byte[],byte[]):438:438 -> onHwSensorTriggered
+    1:4:void <init>(com.netpluspay.netpossdk.view.PasswordDialog):287:290 -> <init>
+    5:5:void <init>(com.netpluspay.netpossdk.view.PasswordDialog,com.netpluspay.netpossdk.view.PasswordDialog$1):287:287 -> <init>
+    1:2:void onError(com.pos.sdk.security.POIHsmManage,int,int):410:411 -> onError
+    3:3:void onError(com.pos.sdk.security.POIHsmManage,int,int):398:398 -> onError
+    4:4:android.widget.TextView com.netpluspay.netpossdk.view.PasswordDialog.access$700(com.netpluspay.netpossdk.view.PasswordDialog):37:37 -> onError
+    4:4:void onError(com.pos.sdk.security.POIHsmManage,int,int):398 -> onError
+    5:5:void onError(com.pos.sdk.security.POIHsmManage,int,int):398:398 -> onError
+    6:6:void onError(com.pos.sdk.security.POIHsmManage,int,int):394:394 -> onError
+    7:7:android.widget.TextView com.netpluspay.netpossdk.view.PasswordDialog.access$700(com.netpluspay.netpossdk.view.PasswordDialog):37:37 -> onError
+    7:7:void onError(com.pos.sdk.security.POIHsmManage,int,int):394 -> onError
+    8:29:void onError(com.pos.sdk.security.POIHsmManage,int,int):394:415 -> onError
+    30:30:void onError(com.pos.sdk.security.POIHsmManage,int,int):402:402 -> onError
+    31:31:boolean com.netpluspay.netpossdk.view.PasswordDialog.access$800(com.netpluspay.netpossdk.view.PasswordDialog):37:37 -> onError
+    31:31:void onError(com.pos.sdk.security.POIHsmManage,int,int):402 -> onError
+    32:36:void onError(com.pos.sdk.security.POIHsmManage,int,int):403:407 -> onError
+    1:1:void onHwSelfCheckRet(com.pos.sdk.security.POIHsmManage,int,int):431:431 -> onHwSelfCheckRet
+    1:1:void onHwSensorTriggered(com.pos.sdk.security.POIHsmManage,int,byte[],byte[]):437:437 -> onHwSensorTriggered
     1:1:void onInfo(com.pos.sdk.security.POIHsmManage,int,int):387:387 -> onInfo
     1:5:void onKeyboardInput(com.pos.sdk.security.POIHsmManage,int):378:382 -> onKeyboardInput
-    6:6:android.widget.EditText com.netpluspay.netpossdk.view.PasswordDialog.access$600(com.netpluspay.netpossdk.view.PasswordDialog):40:40 -> onKeyboardInput
+    6:6:android.widget.EditText com.netpluspay.netpossdk.view.PasswordDialog.access$600(com.netpluspay.netpossdk.view.PasswordDialog):37:37 -> onKeyboardInput
     6:6:void onKeyboardInput(com.pos.sdk.security.POIHsmManage,int):382 -> onKeyboardInput
     7:7:void onKeyboardInput(com.pos.sdk.security.POIHsmManage,int):382:382 -> onKeyboardInput
-    1:2:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):372:373 -> onKeyboardShow
-    3:3:com.pos.sdk.security.POIHsmManage com.netpluspay.netpossdk.view.PasswordDialog.access$500(com.netpluspay.netpossdk.view.PasswordDialog):40:40 -> onKeyboardShow
-    3:3:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373 -> onKeyboardShow
-    4:523:byte[] com.netpluspay.netpossdk.view.PasswordDialog.calculation(byte[]):0:519 -> onKeyboardShow
-    4:523:byte[] com.netpluspay.netpossdk.view.PasswordDialog.access$400(com.netpluspay.netpossdk.view.PasswordDialog,byte[]):40 -> onKeyboardShow
-    4:523:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373 -> onKeyboardShow
-    524:524:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373:373 -> onKeyboardShow
-    1:1:void onPedKeyManageRet(com.pos.sdk.security.POIHsmManage,int):443:443 -> onPedKeyManageRet
-    1:14:void onPedPinBlockRet(com.pos.sdk.security.POIHsmManage,int,byte[]):353:366 -> onPedPinBlockRet
-    1:43:void onPedVerifyPin(com.pos.sdk.security.POIHsmManage,int,byte[]):305:347 -> onPedVerifyPin
+    1:1:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373:373 -> onKeyboardShow
+    2:2:com.pos.sdk.security.POIHsmManage com.netpluspay.netpossdk.view.PasswordDialog.access$500(com.netpluspay.netpossdk.view.PasswordDialog):37:37 -> onKeyboardShow
+    2:2:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373 -> onKeyboardShow
+    3:521:byte[] com.netpluspay.netpossdk.view.PasswordDialog.calculation(byte[]):0:518 -> onKeyboardShow
+    3:521:byte[] com.netpluspay.netpossdk.view.PasswordDialog.access$400(com.netpluspay.netpossdk.view.PasswordDialog,byte[]):37 -> onKeyboardShow
+    3:521:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373 -> onKeyboardShow
+    522:522:void onKeyboardShow(com.pos.sdk.security.POIHsmManage,byte[],int):373:373 -> onKeyboardShow
+    1:1:void onPedKeyManageRet(com.pos.sdk.security.POIHsmManage,int):442:442 -> onPedKeyManageRet
+    1:14:void onPedPinBlockRet(com.pos.sdk.security.POIHsmManage,int,byte[]):354:367 -> onPedPinBlockRet
+    1:54:void onPedVerifyPin(com.pos.sdk.security.POIHsmManage,int,byte[]):295:348 -> onPedVerifyPin
 com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener$1 -> com.netpluspay.netpossdk.view.PasswordDialog$b$a:
     com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener this$1 -> a
-    1:1:void <init>(com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener):416:416 -> <init>
-    1:1:void run():420:420 -> run
-    2:2:boolean com.netpluspay.netpossdk.view.PasswordDialog.access$800(com.netpluspay.netpossdk.view.PasswordDialog):40:40 -> run
-    2:2:void run():420 -> run
-    3:7:void run():421:425 -> run
+    1:1:void <init>(com.netpluspay.netpossdk.view.PasswordDialog$PinEventListener):415:415 -> <init>
+    1:1:void run():419:419 -> run
+    2:2:boolean com.netpluspay.netpossdk.view.PasswordDialog.access$800(com.netpluspay.netpossdk.view.PasswordDialog):37:37 -> run
+    2:2:void run():419 -> run
+    3:7:void run():420:424 -> run
 com.pos.sdk.PosConstants -> com.pos.sdk.PosConstants:
     int DEBUG_LEVEL -> a
     1:196:void <clinit>():13:208 -> <clinit>

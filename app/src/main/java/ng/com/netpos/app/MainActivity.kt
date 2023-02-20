@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         btn = findViewById(R.id.test_card_reading)
         NetPosSdk.writeTpkKey(DeviceConfig.TPKIndex, "6943DD4434E0B3C0D808D0FE2A590CD9", this)
         btn.setOnClickListener {
-            showCardDialog(this, 20, 0, compositeDisposable) { result ->
+            showCardDialog(this, 20, 10, compositeDisposable) { result ->
                 findViewById<TextView>(R.id.scan_result).text = result.toString()
             }
         }

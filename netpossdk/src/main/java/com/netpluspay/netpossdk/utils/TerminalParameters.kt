@@ -13,8 +13,8 @@ data class TerminalParameters @JvmOverloads constructor(
     var referCurrCode: String = "0566",
     var referCurrExp: String = "02",
     var terminalType: String = "22",
-    var terminalCapability: String = "E068C8",
-//    var terminalCapability: String = "E0F8C8",
+    var terminalCapability: String = "E068C8",  // D0D008
+//    var terminalCapability: String = "E0F8C8",  D0D008
     var terminalExCapability: String = "F000F0F001",
     var terminalEntryMode: String = "051"
 ) {

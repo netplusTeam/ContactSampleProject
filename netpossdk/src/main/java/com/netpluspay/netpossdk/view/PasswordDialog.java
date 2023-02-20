@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -58,7 +57,8 @@ public class PasswordDialog {
     private byte[] pinExpData;
     private Listener pinListener;
     public Dialog passwordDialog;
-    public String pinBlockValue = "";
+    public @Nullable
+    String pinBlockValue = null;
     public int transactionErrorCode = AppConstants.INSTANCE.DEFAULT_PIN_ERROR_CODE;
 
     private String title;
@@ -76,11 +76,12 @@ public class PasswordDialog {
     private Group groupKeyboard;
 
 
-    public PasswordDialog(Activity context, boolean isIcSlot, Bundle mBundle, int tpkIndex, int keyMode) {
+    public PasswordDialog(Activity context, boolean isIcSlot, Bundle mBundle, int tpkIndex, int keyMode, String amountToPay) {
         this.hsmManage = POIHsmManage.getDefault();
         this.pinEventListener = new PinEventListener();
         this.keyMode = keyMode;
         this.pinListener = null;
+
         if (isIcSlot) {
             this.icSlot = 0;
         } else {
@@ -141,9 +142,9 @@ public class PasswordDialog {
                 //offline pin
                 title = "Enter PIN";
                 if (pinTryCnt > 1) {
-                    message = "PIN " + pinTryCnt + " ";
+                    message = "Number of PIN try left: " + pinTryCnt + " ";
                 } else if (pinTryCnt == 1) {
-                    message = "The Last Times";
+                    message = "The Last try";
                 }
                 break;
             default:
@@ -177,7 +178,7 @@ public class PasswordDialog {
 
         tvTitle.setText(title);
         tvMessage.setText(message);
-        tvAmount.setText("");
+        tvAmount.setText(amountToPay);
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         passwordDialog = dialog;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -195,12 +196,12 @@ public class PasswordDialog {
 
 
     public void showDialog() {
-        handler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message mesg) {
-                throw new RuntimeException();
-            }
-        };
+//        handler = new Handler(Looper.getMainLooper()) {
+//            @Override
+//            public void handleMessage(Message mesg) {
+//                throw new RuntimeException();
+//            }
+//        };
 
         int ret = -1;
         switch (pinType) {
@@ -221,11 +222,11 @@ public class PasswordDialog {
             return;
         }
 
-        try {
-            Looper.getMainLooper().loop();
-        } catch (RuntimeException e2) {
-            e2.printStackTrace();
-        }
+//        try {
+//            Looper.loop();
+//        } catch (RuntimeException e2) {
+//            e2.printStackTrace();
+//        }
     }
 
     private int PedVerifyPlainPin() {
@@ -278,29 +279,39 @@ public class PasswordDialog {
             System.arraycopy(pTmp, 0, pPan, 0, 16);
         }
 
-        byte pFmtData[] = {0, 0, 0, 0, 0, 0, 0, 0};
+        byte[] pFmtData = {0, 0, 0, 0, 0, 0, 0, 0};
         System.arraycopy(pFmtData, 0, pPan, 16, 8);
-
         return hsmManage.PedGetPinBlock(keyMode, tpkIndex, 0x00, DEFAULT_TIMEOUT_MS, pPan, DEFAULT_EXP_PIN_LEN_IND);
     }
 
     private class PinEventListener implements POIHsmManage.EventListener {
-        private String TAG = "PinEventListener";
+        private final String TAG = "PinEventListener";
 
         String info = "";
 
         @Override
         public void onPedVerifyPin(POIHsmManage arg0, int arg1,
                                    byte[] pRead) {
-            Log.d(TAG, "onPedVerifyPin :" + Integer.toHexString(arg1));
+            Log.d(TAG, "onPedVerifyPin : CHECK_CHECK_CHECK" + Integer.toHexString(arg1));
 
             if (arg1 == 0x87) {
                 int sw1 = (pRead[1] >= 0 ? pRead[1] : (pRead[1] + 256));
                 int sw2 = (pRead[2] >= 0 ? pRead[2] : (pRead[2] + 256));
-                Log.e(TAG, "Read is " + HexUtil.toHexString(pRead));
 
                 if (sw1 == 0x90 && sw2 == 0x00) {
-                    onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, null, null);
+                    if (pRead[0] != 0) {
+                        byte[] pinBlock = new byte[pRead[0]];
+                        System.arraycopy(pRead, 1, pinBlock, 0, pRead[0]);
+                        if (pRead.length > (pRead[0] + 1)) {
+                            byte[] ksn = new byte[pRead[pRead[0] + 1]];
+                            System.arraycopy(pRead, pRead[0] + 2, ksn, 0, pRead[pRead[0] + 1]);
+                            onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, pinBlock, ksn);
+                        } else {
+                            onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, pinBlock, null);
+                        }
+                    } else {
+                        onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, null, null);
+                    }
                 } else if (sw1 == 0x63 && (sw2 & 0xc0) == (int) 0xc0) {
                     if ((sw2 & 0x0F) == 0) {
                         onPinError(EmvPinConstraints.EMV_VERIFY_PIN_BLOCK, 0);
@@ -340,7 +351,7 @@ public class PasswordDialog {
         @Override
         public void onPedPinBlockRet(POIHsmManage arg0, int arg1,
                                      byte[] pRead) {
-            Log.e(TAG, "onPedPinBlockRet " + HexUtil.toHexString(pRead, 0, pRead.length));
+            Log.e(TAG, "onPedPinBlockRet " + "_GOT_HERE");
 
             if (pRead[0] != 0) {
                 byte[] pinBlock = new byte[pRead[0]];
@@ -359,7 +370,6 @@ public class PasswordDialog {
         @Override
         public void onKeyboardShow(POIHsmManage arg0, byte[] arg1,
                                    int timeout) {
-            Log.e(TAG, "onKeyboardShow");
             hsmManage.PedSetKeyLayout(calculation(arg1), 0);
         }
 
@@ -379,7 +389,6 @@ public class PasswordDialog {
 
         @Override
         public void onError(POIHsmManage secMgr, int what, final int extra) {
-            Log.e(TAG, "onError:" + extra);
             switch (extra) {
                 case 65235:
                     tvMessage.setText("The terminal did not write the PIN key. Please check.");
@@ -519,13 +528,13 @@ public class PasswordDialog {
     private void endPwd() {
         dialog.dismiss();
         hsmManage.unregisterListener(pinEventListener);
-        Message m = handler.obtainMessage();
-        handler.sendMessage(m);
     }
 
     private void onPinConfirm(int verifyResult, byte[] pinBlock, byte[] pinKsn) {
         if (pinListener != null) {
-            pinBlockValue = HexUtil.toHexString(pinBlock).toLowerCase(Locale.getDefault());
+            if (pinBlock != null) {
+                pinBlockValue = HexUtil.toHexString(pinBlock).toLowerCase(Locale.getDefault());
+            }
             pinListener.onConfirm(verifyResult, pinBlock, pinKsn);
             return;
         }

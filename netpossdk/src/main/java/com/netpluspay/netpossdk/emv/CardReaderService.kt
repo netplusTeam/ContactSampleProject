@@ -11,6 +11,7 @@ import com.netpluspay.netpossdk.emv.constant.AppConstants.isPinErrorCode
 import com.netpluspay.netpossdk.emv.data.TransactionData
 import com.netpluspay.netpossdk.errors.POSException
 import com.netpluspay.netpossdk.utils.DeviceConfig
+import com.netpluspay.netpossdk.utils.ExtensionFunctions.formatCurrencyAmount
 import com.netpluspay.netpossdk.utils.GlobalData
 import com.netpluspay.netpossdk.utils.tlv.* // ktlint-disable no-wildcard-imports
 import com.netpluspay.netpossdk.view.MaterialDialog
@@ -40,6 +41,7 @@ class CardReaderService @JvmOverloads constructor(
     private lateinit var emitter: ObservableEmitter<CardReaderEvent>
     private var isOnline = false
     private lateinit var passwordDialog: PasswordDialog
+    private var amount: String = ""
     private var isUpdate = false
     private var cardType = 0
     private lateinit var reqData: Bundle
@@ -64,7 +66,6 @@ class CardReaderService @JvmOverloads constructor(
                     }
                 }
                 if (emitter.isDisposed.not()) {
-                    Log.d("ON_EMV_PROCESS", "Called")
                     emitter.onNext(CardReaderEvent.CardDetected(cardMode))
                 }
                 // tvMessage2.setText("Processing")
@@ -72,17 +73,14 @@ class CardReaderService @JvmOverloads constructor(
             } else {
                 when (cardMode) {
                     PosEmvErrCode.EMV_TIMEOUT -> {
-                        Log.d(logTag, "Detection Card Timeout")
                         transEnd(cardMode, "Card Detection Timeout")
                         return
                     }
                     PosEmvErrCode.EMV_CANCEL -> {
-                        Log.d(logTag, "Transaction Cancel")
                         transEnd(cardMode, "Transaction Canceled")
                         return
                     }
                     PosEmvErrCode.EMV_MULTI_PICC -> {
-                        Log.d(logTag, "Multiple cards , Present a single card")
                         transEnd(cardMode, "Multiple cards, Present a single card")
                         return
                     }
@@ -119,7 +117,11 @@ class CardReaderService @JvmOverloads constructor(
         }
 
         override fun onRequestInputPin(p0: Bundle?) {
-            callPinPadDialog(activity, p0) {}
+            if (amount.isNotEmpty()) {
+                callPinPadDialog(activity, p0, amount) {}
+            } else {
+                callPinPadDialog(activity, p0, "") {}
+            }
         }
 
         override fun onRequestOnlineProcess(dataBundle: Bundle) {
@@ -260,6 +262,11 @@ class CardReaderService @JvmOverloads constructor(
                     val cardPanTag = BerTag("5A")
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
+                    val amountTag = BerTag("9F02")
+                    val cashBackAmountTag = BerTag("9F03")
+                    val amount = tlvs.find(amountTag).hexValue
+                    val cashBackAmount = tlvs.find(cashBackAmountTag).hexValue
+                    val amountToPay = (amount.toInt() + cashBackAmount.toInt()).toString()
                     if (isVisaCard) {
                         val modifiedBundle =
                             resultData?.let { modifyBundleForVisaContactless(it, cardPan) }
@@ -268,7 +275,8 @@ class CardReaderService @JvmOverloads constructor(
                             activity,
                             isIcSlot,
                             modifiedBundle!!,
-                            keyMode
+                            keyMode,
+                            amountToPay
                         )
                         val pinBlockValue = pinPadResult.first
                         val errorResultCode = pinPadResult.second
@@ -303,14 +311,16 @@ class CardReaderService @JvmOverloads constructor(
         activity: Activity,
         iccSlot: Boolean,
         bundle: Bundle,
-        keyMode: Int
-    ): Pair<String, Int> {
+        keyMode: Int,
+        amountToPay: String
+    ): Pair<String?, Int> {
         val latch = CountDownLatch(1)
-        var pinBlockValue = ""
+        var pinBlockValue: String? = null
         var errorResult = DEFAULT_PIN_ERROR_CODE
         Handler(Looper.getMainLooper())
             .post {
-                val pinPadDialog = instantiatePasswordDialog(activity, iccSlot, bundle, keyMode) {}
+                val pinPadDialog =
+                    instantiatePasswordDialog(activity, iccSlot, bundle, keyMode, amountToPay) {}
                 pinPadDialog.passwordDialog.setOnDismissListener {
                     pinBlockValue = pinPadDialog.pinBlockValue
                     errorResult = pinPadDialog.transactionErrorCode
@@ -345,9 +355,17 @@ class CardReaderService @JvmOverloads constructor(
         iccSlot: Boolean,
         bundle: Bundle?,
         keyMode: Int,
+        amountToPay: String,
         callback: () -> Unit
     ) =
-        PasswordDialog(activity, iccSlot, bundle, DeviceConfig.TPKIndex, keyMode).apply {
+        PasswordDialog(
+            activity,
+            iccSlot,
+            bundle,
+            DeviceConfig.TPKIndex,
+            keyMode,
+            amountToPay
+        ).apply {
             setPinListener(object : PasswordDialog.Listener {
                 override fun onConfirm(
                     verifyResult: Int,
@@ -390,10 +408,16 @@ class CardReaderService @JvmOverloads constructor(
         transEnd(errorCode, message = pinErrorMessage)
     }
 
-    private fun callPinPadDialog(activity: Activity, p0: Bundle?, callback: () -> Unit) {
+    private fun callPinPadDialog(
+        activity: Activity,
+        p0: Bundle?,
+        amountToPay: String,
+        callback: () -> Unit
+    ) {
         Handler(Looper.getMainLooper()).post {
             val isIcSlot = cardType == DEV_ICC
-            passwordDialog = instantiatePasswordDialog(activity, isIcSlot, p0, keyMode) {}
+            passwordDialog =
+                instantiatePasswordDialog(activity, isIcSlot, p0, keyMode, amountToPay) {}
             passwordDialog.showDialog()
         }
     }
@@ -404,6 +428,7 @@ class CardReaderService @JvmOverloads constructor(
         p0: Long,
         p1: Long
     ): Observable<CardReaderEvent> {
+        amount = (p0 + p1).formatCurrencyAmount()
         reqData = Bundle().apply {
             putInt(EmvTransDataConstraints.TRANSTYPE, EMV_GOODS)
             putInt(EmvTransDataConstraints.TRANSAMT, p0.toInt())
@@ -411,7 +436,6 @@ class CardReaderService @JvmOverloads constructor(
             putInt(EmvTransDataConstraints.TRANSTIMEOUTMS, timeout)
             var transMode = 0
             if (modes.isEmpty()) {
-                Log.e("initiateICCCardPayment", "No mode selected")
                 throw POSException(0, "No CardMode selected")
             }
             modes.forEach {

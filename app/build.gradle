@@ -8,15 +8,23 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
+//    signingConfigs {
+//        debug {
+//            storeFile file('/Users/adebayooloyede/Desktop/kozen-appstore.keystore')
+//            storePassword '!#stlg#m&c'
+//            keyPassword '!#stlg#m&c'
+//            keyAlias 'netplus'
+//        }
+//    }
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     signingConfigs {
         netpos_signing_config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            storeFile file('/Users/adebayooloyede/Desktop/kozen-appstore.keystore')
+            storePassword '!#stlg#m&c'
+            keyPassword '!#stlg#m&c'
+            keyAlias 'netplus'
         }
     }
 
@@ -32,12 +40,16 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.netpos_signing_config
+            buildConfigField "String", "BUILD_VARIANT", "\"release\""
+            debuggable false
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            signingConfig signingConfigs.netpos_signing_config
-        }
+//        debug {
+//            signingConfig signingConfigs.netpos_signing_config
+//        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

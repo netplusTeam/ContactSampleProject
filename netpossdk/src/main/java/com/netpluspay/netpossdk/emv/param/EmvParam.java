@@ -106,8 +106,8 @@ public class EmvParam {
         mEmvCoreManager.EmvAddAid(appList);
 
         appList = addAidParam("A0000000031010", "008C", true);
-//        appList.ContactlessTransMoneyLimit = 200001;
-//        appList.TermDoCvmMoneyLimit = 200001;
+        appList.ContactlessTransMoneyLimit = 200001;
+        appList.TermDoCvmMoneyLimit = 200001;
 
         appList.dDOL = PosUtils.hexStringToBytes("9F3704");
         appList.tDOL = PosUtils.hexStringToBytes("9F3704");
