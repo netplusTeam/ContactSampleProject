@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -196,12 +197,12 @@ public class PasswordDialog {
 
 
     public void showDialog() {
-//        handler = new Handler(Looper.getMainLooper()) {
-//            @Override
-//            public void handleMessage(Message mesg) {
-//                throw new RuntimeException();
-//            }
-//        };
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message mesg) {
+                throw new RuntimeException();
+            }
+        };
 
         int ret = -1;
         switch (pinType) {
@@ -222,11 +223,11 @@ public class PasswordDialog {
             return;
         }
 
-//        try {
-//            Looper.loop();
-//        } catch (RuntimeException e2) {
-//            e2.printStackTrace();
-//        }
+        try {
+            Looper.loop();
+        } catch (RuntimeException e2) {
+            e2.printStackTrace();
+        }
     }
 
     private int PedVerifyPlainPin() {
@@ -292,26 +293,14 @@ public class PasswordDialog {
         @Override
         public void onPedVerifyPin(POIHsmManage arg0, int arg1,
                                    byte[] pRead) {
-            Log.d(TAG, "onPedVerifyPin : CHECK_CHECK_CHECK" + Integer.toHexString(arg1));
+            Log.d(TAG, "onPedVerifyPin: " + Integer.toHexString(arg1));
 
             if (arg1 == 0x87) {
                 int sw1 = (pRead[1] >= 0 ? pRead[1] : (pRead[1] + 256));
                 int sw2 = (pRead[2] >= 0 ? pRead[2] : (pRead[2] + 256));
 
                 if (sw1 == 0x90 && sw2 == 0x00) {
-                    if (pRead[0] != 0) {
-                        byte[] pinBlock = new byte[pRead[0]];
-                        System.arraycopy(pRead, 1, pinBlock, 0, pRead[0]);
-                        if (pRead.length > (pRead[0] + 1)) {
-                            byte[] ksn = new byte[pRead[pRead[0] + 1]];
-                            System.arraycopy(pRead, pRead[0] + 2, ksn, 0, pRead[pRead[0] + 1]);
-                            onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, pinBlock, ksn);
-                        } else {
-                            onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, pinBlock, null);
-                        }
-                    } else {
-                        onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, null, null);
-                    }
+                    onPinConfirm(EmvPinConstraints.EMV_VERIFY_SUC, null, null);
                 } else if (sw1 == 0x63 && (sw2 & 0xc0) == (int) 0xc0) {
                     if ((sw2 & 0x0F) == 0) {
                         onPinError(EmvPinConstraints.EMV_VERIFY_PIN_BLOCK, 0);
@@ -342,7 +331,6 @@ public class PasswordDialog {
                     onPinError(EmvPinConstraints.EMV_VERIFY_NO_PINPAD, 0);
                 }
             } else {
-                Log.d(TAG, "other else");
                 onPinError(EmvPinConstraints.EMV_VERIFY_NO_PINPAD, 0);
             }
             endPwd();
@@ -351,8 +339,6 @@ public class PasswordDialog {
         @Override
         public void onPedPinBlockRet(POIHsmManage arg0, int arg1,
                                      byte[] pRead) {
-            Log.e(TAG, "onPedPinBlockRet " + "_GOT_HERE");
-
             if (pRead[0] != 0) {
                 byte[] pinBlock = new byte[pRead[0]];
                 System.arraycopy(pRead, 1, pinBlock, 0, pRead[0]);
