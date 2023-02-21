@@ -266,7 +266,7 @@ class CardReaderService @JvmOverloads constructor(
                     val cashBackAmountTag = BerTag("9F03")
                     val amount = tlvs.find(amountTag).hexValue
                     val cashBackAmount = tlvs.find(cashBackAmountTag).hexValue
-                    val amountToPay = (amount.toInt() + cashBackAmount.toInt()).toString()
+                    val amountToPay = (amount.toInt() + cashBackAmount.toInt()).formatCurrencyAmount()
                     if (isVisaCard) {
                         val modifiedBundle =
                             resultData?.let { modifyBundleForVisaContactless(it, cardPan) }
