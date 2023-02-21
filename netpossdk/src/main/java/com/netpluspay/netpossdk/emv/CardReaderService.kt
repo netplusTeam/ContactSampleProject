@@ -118,7 +118,7 @@ class CardReaderService @JvmOverloads constructor(
 
         override fun onRequestInputPin(p0: Bundle?) {
             if (amount.isNotEmpty()) {
-                callPinPadDialog(activity, p0, amount.toInt().formatCurrencyAmount()) {}
+                callPinPadDialog(activity, p0, amount) {}
             } else {
                 callPinPadDialog(activity, p0, "") {}
             }
@@ -286,6 +286,7 @@ class CardReaderService @JvmOverloads constructor(
                             pinPadErrorCallBack(errorResultCode)
                             return
                         } else {
+                            transactionData.transData = buff
                             val cardReadResult = CardReadResult(result, transactionData).apply {
                                 encryptedPinBlock = pinBlockValue
                             }
