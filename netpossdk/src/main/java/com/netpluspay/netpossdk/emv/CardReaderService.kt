@@ -259,6 +259,7 @@ class CardReaderService @JvmOverloads constructor(
             if (emitter.isDisposed.not()) {
                 if (cardType == DEV_PICC) {
                     val aidTag = BerTag("84")
+                    val aidTag2 = BerTag("4F")
                     val cardPanTag = BerTag("5A")
                     val cardPan = tlvs.find(cardPanTag).hexValue
                     val isVisaCard = tlvs.find(aidTag).hexValue == "A0000000031010"
