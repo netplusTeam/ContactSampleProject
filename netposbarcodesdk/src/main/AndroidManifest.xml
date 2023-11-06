@@ -3,7 +3,10 @@
     package="com.netpluspay.netposbarcodesdk">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -12,9 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NetposLibrary">
         <activity
-            android:name=".BarcodeActivity"
-            android:exported="true">
+            android:name=".CodeScannerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_code_scanner"
+            android:theme="@style/Theme.NetposLibrary.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
+        <activity
+            android:name=".BarcodeActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

@@ -6,11 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Size
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -36,14 +36,14 @@ internal class BarcodeActivity : AppCompatActivity() {
     companion object {
         internal fun startActivity(
             context: Context,
-            resultLauncher: ActivityResultLauncher<Intent>
+            resultLauncher: ActivityResultLauncher<Intent>,
         ) {
             val intent = Intent(context, BarcodeActivity::class.java)
             resultLauncher.launch(intent)
         }
 
         @Deprecated(message = "use startActivity with result launcher")
-        internal fun startActivity(context: Activity, requestCode: Int){
+        internal fun startActivity(context: Activity, requestCode: Int) {
             val intent = Intent(context, BarcodeActivity::class.java)
             context.startActivityForResult(intent, requestCode)
         }
@@ -57,27 +57,28 @@ internal class BarcodeActivity : AppCompatActivity() {
         }
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.CAMERA
+                Manifest.permission.CAMERA,
             ) == PackageManager.PERMISSION_GRANTED
-        )
+        ) {
             startCamera()
-        else {
+        } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
-                    Manifest.permission.CAMERA
+                    Manifest.permission.CAMERA,
                 )
-            )
+            ) {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.CAMERA),
-                    CAMERA_PERMISSION_REQUEST_CODE
+                    CAMERA_PERMISSION_REQUEST_CODE,
                 )
-            else
+            } else {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.CAMERA),
-                    CAMERA_PERMISSION_REQUEST_CODE
+                    CAMERA_PERMISSION_REQUEST_CODE,
                 )
+            }
         }
     }
 
@@ -122,29 +123,27 @@ internal class BarcodeActivity : AppCompatActivity() {
                 }
 
                 override fun onQrCodeNotFound() {
-
                 }
-
-            })
+            }),
         )
         cameraProvider.bindToLifecycle(
             this as LifecycleOwner,
             cameraSelector,
             imageAnalysis,
-            preview
+            preview,
         )
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.size == 1 && grantResults.first() == PackageManager.PERMISSION_GRANTED)
+            if (grantResults.size == 1 && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
-            else {
+            } else {
                 Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
                 finish()
             }

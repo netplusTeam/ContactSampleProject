@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">netposbarcodesdk</string>
+    <string name="title_activity_code_scanner">CodeScannerActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="perm_granted">Permission granted</string>
+    <string name="perm_denied">Permission denied</string>
+    <string name="scanning_not_completed">Scanning terminated before completion</string>
+    <string name="scanner_closed">Scanner Closed</string>
+    <string name="camera_perm_rationale">You need to allow access permissions before you can scan the QR inorder for the customer to make the payment</string>
 </resources>

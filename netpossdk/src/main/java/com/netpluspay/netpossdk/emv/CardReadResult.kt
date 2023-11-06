@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils
 
 class CardReadResult(
     private val readResultCode: Int,
-    private val transactionData: TransactionData
+    private val transactionData: TransactionData,
 ) {
     var originalDeviceSerial: String? = null
         private set
@@ -145,99 +145,99 @@ class CardReadResult(
             builder.append("9F26")
                 .append(HexDump.toHexString(("${cryptogram!!.length / 2}").toByte()))
                 .append(
-                    cryptogram
+                    cryptogram,
                 )
                 .append("9F27")
                 .append(HexDump.toHexString(("${cryptogramInformationData!!.length / 2}").toByte()))
                 .append(
-                    cryptogramInformationData
+                    cryptogramInformationData,
                 )
                 .append("9F10")
                 .append(HexDump.toHexString(("${issuerApplicationData!!.length / 2}").toByte()))
                 .append(
-                    issuerApplicationData
+                    issuerApplicationData,
                 )
                 .append("9F37")
                 .append(HexDump.toHexString(("${unpredictableNumber!!.length / 2}").toByte()))
                 .append(
-                    unpredictableNumber
+                    unpredictableNumber,
                 )
                 .append("9F36")
                 .append(HexDump.toHexString(("${applicationTransactionCounter!!.length / 2}").toByte()))
                 .append(
-                    applicationTransactionCounter
+                    applicationTransactionCounter,
                 )
                 .append("95")
                 .append(HexDump.toHexString(("${terminalVerificationResults!!.length / 2}").toByte()))
                 .append(
-                    terminalVerificationResults
+                    terminalVerificationResults,
                 )
                 .append("9A")
                 .append(HexDump.toHexString(("${transactionDate!!.length / 2}").toByte()))
                 .append(
-                    transactionDate
+                    transactionDate,
                 )
                 .append("9C")
                 .append(HexDump.toHexString(("${transactionType!!.length / 2}").toByte()))
                 .append(
-                    transactionType
+                    transactionType,
                 )
                 .append("9F02").append(HexDump.toHexString(("${amount!!.length / 2}").toByte()))
                 .append(amount)
                 .append("5F2A")
                 .append(HexDump.toHexString(("${transactionCurrencyCode!!.length / 2}").toByte()))
                 .append(
-                    transactionCurrencyCode
+                    transactionCurrencyCode,
                 )
                 .append("82")
                 .append(HexDump.toHexString(("${applicationInterchangeProfile!!.length / 2}").toByte()))
                 .append(
-                    applicationInterchangeProfile
+                    applicationInterchangeProfile,
                 )
                 .append("9F1A")
                 .append(HexDump.toHexString(("${terminalCountryCode!!.length / 2}").toByte()))
                 .append(
-                    terminalCountryCode
+                    terminalCountryCode,
                 )
                 .append("9F34")
                 .append(HexDump.toHexString(("${cardholderVerificationMethod!!.length / 2}").toByte()))
                 .append(
-                    cardholderVerificationMethod
+                    cardholderVerificationMethod,
                 )
                 .append("9F33")
                 .append(HexDump.toHexString(("${terminalCapabilities!!.length / 2}").toByte()))
                 .append(
-                    terminalCapabilities
+                    terminalCapabilities,
                 )
                 .append("9F35")
                 .append(HexDump.toHexString(("${terminalType!!.length / 2}").toByte()))
                 .append(
-                    terminalType
+                    terminalType,
                 )
                 .append("9F1E")
                 .append(HexDump.toHexString(("${deviceSerialNumber!!.length / 2}").toByte()))
                 .append(
-                    deviceSerialNumber
+                    deviceSerialNumber,
                 )
                 .append("84")
                 .append(HexDump.toHexString(("${dedicatedFileName!!.length / 2}").toByte()))
                 .append(
-                    dedicatedFileName
+                    dedicatedFileName,
                 )
                 .append("9F09")
                 .append(HexDump.toHexString(("${applicationVersionNumber!!.length / 2}").toByte()))
                 .append(
-                    applicationVersionNumber
+                    applicationVersionNumber,
                 )
                 .append("9F03")
                 .append(HexDump.toHexString(("${cashBackAmount!!.length / 2}").toByte()))
                 .append(
-                    cashBackAmount
+                    cashBackAmount,
                 )
                 .append("5F34")
                 .append(HexDump.toHexString(("${cardSequenceNumber!!.length / 2}").toByte()))
                 .append(
-                    cardSequenceNumber
+                    cardSequenceNumber,
                 )
             // .append("91").append(this.issueAuthenticationData);
             // .append("9F6E").append(this.formFactorIndicator);

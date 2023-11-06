@@ -29,12 +29,9 @@ import java.util.concurrent.CountDownLatch
 
 class CardReaderService @JvmOverloads constructor(
     activity: Activity,
-    private val modes: List<Int> = listOf(
-        DEV_ICC,
-        DEV_PICC
-    ),
+    private val modes: List<Int> = listOf(DEV_ICC, DEV_PICC),
     private val timeout: Int = 45,
-    private val keyMode: Int = POIHsmManage.PED_PINBLOCK_FETCH_MODE_TPK
+    private val keyMode: Int = POIHsmManage.PED_PINBLOCK_FETCH_MODE_TPK,
 ) : AndroidTerminalCardReaderFactory<Observable<CardReaderEvent>>() {
     private val logTag = CardReaderService::class.java.simpleName
     private var transactionData = TransactionData()
@@ -100,7 +97,7 @@ class CardReaderService @JvmOverloads constructor(
             val mDialog = MaterialDialog(activity)
             mDialog.showListConfirmChoseDialog(
                 "Select Application",
-                appNames
+                appNames,
             ) { position ->
                 emvCoreManager.onSetSelAppResponse(position)
             }
@@ -134,13 +131,13 @@ class CardReaderService @JvmOverloads constructor(
             for (tlv in tlvs.list) {
                 Log.d(
                     logTag,
-                    "Emv Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue
+                    "Emv Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue,
                 )
             }
 
             val result = dataBundle.getInt(
                 EmvOnlineRequestConstraints.ENCRYPTRESULT,
-                PosEmvErrCode.EMV_UNENCRYPTED
+                PosEmvErrCode.EMV_UNENCRYPTED,
             )
             when (result) {
                 PosEmvErrCode.EMV_OK -> {
@@ -151,7 +148,7 @@ class CardReaderService @JvmOverloads constructor(
                     for (tlv in encryptTlvs.list) {
                         Log.d(
                             logTag,
-                            "Emv Encrypt Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue
+                            "Emv Encrypt Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue,
                         )
                     }
                     val tlvBuilder = BerTlvBuilder()
@@ -173,7 +170,7 @@ class CardReaderService @JvmOverloads constructor(
             val onlineInput = Bundle()
             onlineInput.putInt(
                 EmvOnlineResultConstraints.REQUESTAC,
-                GlobalData.getTransOnlineResult()
+                GlobalData.getTransOnlineResult(),
             )
             emvCoreManager.onSetOnlineResponse(onlineInput)
         }
@@ -190,7 +187,7 @@ class CardReaderService @JvmOverloads constructor(
 
             val encryptResult = resultData?.getInt(
                 EmvOnlineRequestConstraints.ENCRYPTRESULT,
-                PosEmvErrCode.EMV_UNENCRYPTED
+                PosEmvErrCode.EMV_UNENCRYPTED,
             )
             when (encryptResult) {
                 PosEmvErrCode.EMV_OK -> {
@@ -201,7 +198,7 @@ class CardReaderService @JvmOverloads constructor(
                     for (tlv in encryptTlvs.list) {
                         Log.d(
                             logTag,
-                            "Emv Encrypt Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue
+                            "Emv Encrypt Tag :" + tlv.tag.toString() + "    Emv Value :" + tlv.hexValue,
                         )
                     }
                     val tlvBuilder = BerTlvBuilder()
@@ -229,7 +226,7 @@ class CardReaderService @JvmOverloads constructor(
                 EmvProcessResultConstraints.CVM_SIGNATURE -> Log.d(logTag, "Cvm :CVM_SIGNATURE")
                 EmvProcessResultConstraints.CVM_CONFIRMATION_CODE_VERIFIED -> Log.d(
                     logTag,
-                    "Cvm :CVM_CONFIRMATION_CODE_VERIFIED"
+                    "Cvm :CVM_CONFIRMATION_CODE_VERIFIED",
                 )
                 EmvProcessResultConstraints.CVM_NO_CVM -> Log.d(logTag, "Cvm :CVM_NO_CVM")
                 EmvProcessResultConstraints.CVM_SEE_PHONE -> {
@@ -277,7 +274,7 @@ class CardReaderService @JvmOverloads constructor(
                             isIcSlot,
                             modifiedBundle!!,
                             keyMode,
-                            amountToPay
+                            amountToPay,
                         )
                         val pinBlockValue = pinPadResult.first
                         val errorResultCode = pinPadResult.second
@@ -293,8 +290,8 @@ class CardReaderService @JvmOverloads constructor(
                             }
                             emitter.onNext(
                                 CardReaderEvent.CardRead(
-                                    cardReadResult
-                                )
+                                    cardReadResult,
+                                ),
                             )
                         }
                     } else {
@@ -314,7 +311,7 @@ class CardReaderService @JvmOverloads constructor(
         iccSlot: Boolean,
         bundle: Bundle,
         keyMode: Int,
-        amountToPay: String
+        amountToPay: String,
     ): Pair<String?, Int> {
         val latch = CountDownLatch(1)
         var pinBlockValue: String? = null
@@ -340,15 +337,15 @@ class CardReaderService @JvmOverloads constructor(
             CardReaderEvent.CardRead(
                 CardReadResult(
                     result,
-                    transactionData
+                    transactionData,
                 ).apply {
                     if (::cardPinBlock.isInitialized.not()) {
                         transEnd(-1, "Did not request pinblock")
                         return
                     }
                     encryptedPinBlock = cardPinBlock
-                }
-            )
+                },
+            ),
         )
     }
 
@@ -358,7 +355,7 @@ class CardReaderService @JvmOverloads constructor(
         bundle: Bundle?,
         keyMode: Int,
         amountToPay: String,
-        callback: () -> Unit
+        callback: () -> Unit,
     ) =
         PasswordDialog(
             activity,
@@ -366,13 +363,13 @@ class CardReaderService @JvmOverloads constructor(
             bundle,
             DeviceConfig.TPKIndex,
             keyMode,
-            amountToPay
+            amountToPay,
         ).apply {
             setPinListener(object : PasswordDialog.Listener {
                 override fun onConfirm(
                     verifyResult: Int,
                     pinBlock: ByteArray?,
-                    pinKsn: ByteArray?
+                    pinKsn: ByteArray?,
                 ) {
                     cardPinBlock = ""
                     pinBlock?.let {
@@ -414,7 +411,7 @@ class CardReaderService @JvmOverloads constructor(
         activity: Activity,
         p0: Bundle?,
         amountToPay: String,
-        callback: () -> Unit
+        callback: () -> Unit,
     ) {
         Handler(Looper.getMainLooper()).post {
             val isIcSlot = cardType == DEV_ICC
@@ -428,7 +425,7 @@ class CardReaderService @JvmOverloads constructor(
 
     override fun initiateICCCardPayment(
         p0: Long,
-        p1: Long
+        p1: Long,
     ): Observable<CardReaderEvent> {
         amount = (p0 + p1).formatCurrencyAmount()
         reqData = Bundle().apply {
@@ -496,7 +493,7 @@ class CardReaderService @JvmOverloads constructor(
 
     private fun modifyBundleForVisaContactless(
         bundle: Bundle,
-        cardPan: String
+        cardPan: String,
     ): Bundle = bundle.apply {
         putInt(EmvPinConstraints.PINTYPE, 34)
         putString(EmvPinConstraints.PINCARD, cardPan)

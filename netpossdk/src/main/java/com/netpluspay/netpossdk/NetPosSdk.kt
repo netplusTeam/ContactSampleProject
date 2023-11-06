@@ -36,7 +36,7 @@ object NetPosSdk {
             Uri.parse("content://telephony/carriers"),
             values,
             selection,
-            null
+            null,
         )
     }
 
@@ -167,7 +167,7 @@ object NetPosSdk {
             keyIndex,
             0,
             16,
-            HexUtil.parseHex(keyData)
+            HexUtil.parseHex(keyData),
         )
         saveInSharedPrefs(keyData, context)
         POIHsmManage.getDefault().PedWriteKey(pedKeyInfo, PedKcvInfo(0, ByteArray(5)))
@@ -196,7 +196,7 @@ object NetPosSdk {
             key.size,
             key,
             ksn,
-            PedKcvInfo(5, ByteArray(5))
+            PedKcvInfo(5, ByteArray(5)),
         )
     }
 
