@@ -1,3 +1,2 @@
 include ':app', ':netpossdk'
 rootProject.name = "Netpos Library"
-include ':netposbarcodesdk'
