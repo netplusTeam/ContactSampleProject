@@ -1,2 +1,2 @@
-include ':app', ':netpossdk'
+include ':app'
 rootProject.name = "Netpos Library"

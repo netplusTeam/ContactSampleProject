@@ -3,19 +3,7 @@ plugins {
     id 'kotlin-android'
 }
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
 android {
-//    signingConfigs {
-//        debug {
-//            storeFile file('/Users/adebayooloyede/Desktop/kozen-appstore.keystore')
-//            storePassword '!#stlg#m&c'
-//            keyPassword '!#stlg#m&c'
-//            keyAlias 'netplus'
-//        }
-//    }
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
@@ -55,7 +43,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
-    implementation project(":netpossdk")
+
+    //netpos sdk
+    implementation 'com.github.netplusTeam.NetposContactSdk:netpossdk:1.0.30'
 
     //rx
     implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
