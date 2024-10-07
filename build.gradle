@@ -17,7 +17,13 @@ repositories {
     mavenCentral()
     google()
     jcenter()
-
+    maven {
+        url    'https://jitpack.io/com/github/netplusTeam/NetposContactSdk/netpossdk/1.0.30/netpossdk-1.0.30.aar'
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USER")
+            password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
     mavenLocal()
     jcenter()
     gradlePluginPortal()
@@ -29,7 +35,13 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-
+        maven {
+            url    'https://jitpack.io'
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USER")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
 //        maven {
 //            url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
 //        }
